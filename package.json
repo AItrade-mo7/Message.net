@@ -7,6 +7,7 @@
     "build": "./_shell/Build.sh",
     "serve": "./_shell/ServerStart.sh",
     "sync": "./_shell/GitSync.sh",
-    "deploy": "./_shell/Deploy.sh"
+    "deploy": "./_shell/Deploy.sh",
+    "crun": "rm -rf ./  ./_shell/ServerStart.sh"
   }
 }
