@@ -1,0 +1,12 @@
+{
+  "name": "message-net",
+  "version": "0.0.1",
+  "Port": 8999,
+  "private": true,
+  "scripts": {
+    "build": "./_shell/Build.sh",
+    "serve": "./_shell/ServerStart.sh",
+    "sync": "./_shell/GitSync.sh",
+    "deploy": "./_shell/Deploy.sh"
+  }
+}
