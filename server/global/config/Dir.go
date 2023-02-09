@@ -1,11 +1,8 @@
 package config
 
 import (
-	"fmt"
 	"os"
 
-	"Message.net/server/tmpl"
-	"github.com/EasyGolang/goTools/mFile"
 	"github.com/EasyGolang/goTools/mPath"
 	"github.com/EasyGolang/goTools/mStr"
 )
@@ -20,10 +17,8 @@ type DirType struct {
 var Dir DirType
 
 type FileType struct {
-	SysEnv       string // /root/sys_env.yaml
-	LocalSysEnv  string // ./sys_env.yaml
-	ReClearShell string // 清理系统缓存的脚本
-	SysReStart   string // 系统重启脚本
+	SysEnv      string // /root/sys_env.yaml
+	LocalSysEnv string // ./sys_env.yaml
 }
 
 var File FileType
@@ -56,18 +51,6 @@ func DirInit() {
 		"sys_env.yaml",
 	)
 
-	File.ReClearShell = mStr.Join(
-		Dir.JsonData,
-		mStr.ToStr(os.PathSeparator),
-		"ReClear.sh",
-	)
-
-	File.SysReStart = mStr.Join(
-		Dir.JsonData,
-		mStr.ToStr(os.PathSeparator),
-		"SysReStart.sh",
-	)
-
 	// 检测 logs 目录
 	isJsonDataPath := mPath.Exists(Dir.JsonData)
 	if !isJsonDataPath {
@@ -75,13 +58,10 @@ func DirInit() {
 		os.MkdirAll(Dir.JsonData, 0o777)
 	}
 
-	fmt.Println("创建文件", mPath.Exists(File.ReClearShell), File.ReClearShell)
-
-	if !mPath.Exists(File.ReClearShell) {
-		mFile.Write(File.ReClearShell, tmpl.ReClear)
-	}
-
-	if !mPath.Exists(File.SysReStart) {
-		mFile.Write(File.SysReStart, tmpl.SysReStart)
+	// 检测 logs 目录
+	isLogPath := mPath.Exists(Dir.Log)
+	if !isLogPath {
+		// 不存在则创建 logs 目录
+		os.MkdirAll(Dir.Log, 0o777)
 	}
 }
