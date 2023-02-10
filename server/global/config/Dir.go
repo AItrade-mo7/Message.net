@@ -8,10 +8,11 @@ import (
 )
 
 type DirType struct {
-	Home     string // Home 根目录
-	App      string // APP 根目录
-	Log      string // 日志文件目录
-	JsonData string // json 数据存放目录
+	Home      string // Home 根目录
+	App       string // APP 根目录
+	Log       string // 日志文件目录
+	JsonData  string // json 数据存放目录
+	TaskQueue string // 任务队列
 }
 
 var Dir DirType
@@ -39,6 +40,11 @@ func DirInit() {
 		mStr.ToStr(os.PathSeparator),
 		"jsonData",
 	)
+	Dir.TaskQueue = mStr.Join(
+		Dir.App,
+		mStr.ToStr(os.PathSeparator),
+		"TaskQueue",
+	)
 
 	File.SysEnv = mStr.Join(
 		Dir.Home,
@@ -51,7 +57,7 @@ func DirInit() {
 		"sys_env.yaml",
 	)
 
-	// 检测 logs 目录
+	// 检测 JsonData 目录
 	isJsonDataPath := mPath.Exists(Dir.JsonData)
 	if !isJsonDataPath {
 		// 不存在则创建 logs 目录
@@ -63,5 +69,12 @@ func DirInit() {
 	if !isLogPath {
 		// 不存在则创建 logs 目录
 		os.MkdirAll(Dir.Log, 0o777)
+	}
+
+	// 检测  目录
+	isTaskQueuePath := mPath.Exists(Dir.TaskQueue)
+	if !isTaskQueuePath {
+		// 不存在则创建 logs 目录
+		os.MkdirAll(Dir.TaskQueue, 0o777)
 	}
 }

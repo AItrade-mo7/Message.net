@@ -29,6 +29,8 @@ hunter_release
 *_x86_64
 /TestRun
 
+TaskQueue
+
 # Test binary, built with `go test -c`
 *.test
 
