@@ -1,24 +1,32 @@
 package api
 
 import (
-	"fmt"
-
+	"Message.net/server/global/config"
 	"Message.net/server/router/result"
 	"github.com/EasyGolang/goTools/mFiber"
+	"github.com/EasyGolang/goTools/mFile"
+	"github.com/EasyGolang/goTools/mJson"
+	"github.com/EasyGolang/goTools/mStr"
+	"github.com/EasyGolang/goTools/mTask"
 	"github.com/gofiber/fiber/v2"
 )
 
-type TaskQueue struct {
-	TaskID   string         `bson:"TaskID"`   // 任务ID
-	TaskType string         `bson:"TaskType"` // 任务类型  SendEmail, SendOrder 等
-	Content  map[string]any `bson:"Content"`  // 任务内容 用不同的模板去解析
-}
-
 func InsertTaskQueue(c *fiber.Ctx) error {
-	var json map[string]any
+	var json mTask.TaskType
 	mFiber.Parser(c, &json)
 
-	fmt.Println(json)
+	nowTaskType, err := mTask.CheckTask(json)
+	if err != nil {
+		return c.JSON(result.Fail.WithMsg(err))
+	}
+	// 把任务写到 目录当中
+	FilePath := mStr.Join(
+		config.Dir.TaskQueue,
+		"/",
+		nowTaskType.TaskID+".json",
+	)
+
+	mFile.Write(FilePath, mJson.ToStr(json))
 
 	return c.JSON(result.Succeed.WithData("Succeed"))
 }
