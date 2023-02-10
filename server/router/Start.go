@@ -8,6 +8,7 @@ import (
 	"Message.net/server/global/config"
 	"Message.net/server/router/api"
 	"Message.net/server/router/middle"
+	"Message.net/server/router/public"
 	"github.com/EasyGolang/goTools/mStr"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -41,6 +42,11 @@ func Start() {
 		TimeFormat: "2006-01-02 - 15:04:05",
 		Output:     logFile,
 	}), middle.Public, compress.New(), favicon.New())
+
+	// api
+	r_api := app.Group("/api")
+	// /api/public
+	public.Router(r_api)
 
 	// 静态文件服务器
 	app.Use(api.Ping)
