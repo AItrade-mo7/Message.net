@@ -18,25 +18,32 @@ func SendRegisterEmail() {
 // 用 gmail 发送
 func FromGmail() {
 	/*
-		meichangliang@gmail.com
-		nmqlusfgaeyexxok
+
+		Account:  "meichangliang@gmail.com",
+		Password: "nmqlusfgaeyexxok",
+		Port:     "587",
+		Host:     "smtp.gmail.com",
+
 	*/
 }
 
 // 用 企业微信 发送
 func FromWorkWeiXin() {
 	/*
-		trade@mo7.cc
-		DXir4WLb2aGaknLZ
+		Account:  "trade@mo7.cc",
+		Password: "DXir4WLb2aGaknLZ",
+		Port:     "587",
+		Host:     "smtp.exmail.qq.com",
 	*/
 }
 
 // 用 qq 发送
 func FromQQ() {
 	/*
-		670188307@qq.com
-		meichangliang@qq.com
-		fxdxnbyronppbfha
-
+		Account: "meichangliang@qq.com",
+		// Account:  "670188307@qq.com",
+		Password: "fxdxnbyronppbfha",
+		Port:     "587",
+		Host:     "smtp.qq.com",
 	*/
 }
