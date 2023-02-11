@@ -9,10 +9,10 @@ import (
 )
 
 func Start() {
-	// 初始化目录列表
+	// 初始化项目目录
 	config.DirInit()
 
-	// 初始化日志系统 保证日志可用
+	// 初始化日志系统
 	mCycle.New(mCycle.Opt{
 		Func:      LogInit,
 		SleepTime: time.Hour * 24,
