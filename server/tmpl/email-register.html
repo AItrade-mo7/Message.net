@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta http-equiv="Expires" content="0" />
+    <meta http-equiv="Cache-control" content="no-store" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="AITrade" />
+    <link rel="apple-touch-icon" href="//file.mo7.cc/AITrade/logo/app.svg" />
+    <link
+      rel="mask-icon"
+      href="//file.mo7.cc/AITrade/logo/app.svg"
+      color="#F0B90B"
+    />
+    <meta
+      name="msapplication-TileImage"
+      content="//file.mo7.cc/AITrade/logo/app.svg"
+    />
+    <meta name="msapplication-TileColor" content="#F0B90B" />
+    <link rel="icon" href="//file.mo7.cc/AITrade/logo/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="//file.mo7.cc/AITrade/logo/app.svg"
+    />
+    <title>AITrade 系统邮件</title>
+  </head>
+
+  <body style="font-family: arial, verdana, sans-serif">
+    <h1>注册成功！</h1>
+    <div style="border-bottom: 1px solid #ccc"></div>
+    <div style="margin-top: 20px">
+      <div style="padding-bottom: 16px">
+        <strong style="color: #4d4d4d; font-size: 24px">
+          恭喜您已用该邮箱箱成功注册，系统为您分配的密码为：
+        </strong>
+      </div>
+      <div style="color: #f60; font-size: 36px; padding-bottom: 16px">
+        <strong> {{.Password}} </strong>
+      </div>
+
+      <div>
+        <strong style="font-size: 18px">
+          请及时登录并修改密码，注意区分大小写
+        </strong>
+      </div>
+
+      <div>
+        <small style="color: #747474; font-size: 12px">
+          注意：如非本人操作，可以忽略该邮件
+        </small>
+      </div>
+      <div>
+        <small style="color: #747474; font-size: 12px">
+          （任何人都不会向您索取此密码，使用前
+          <strong style="color: #4d4d4d; font-size: 14px">请确认唯一</strong>
+          完整域名
+          <strong style="color: #4d4d4d; font-size: 14px"
+            >https://trade.mo7.cc</strong
+          >
+          )
+        </small>
+      </div>
+
+      <div>
+        <small style="color: #747474; font-size: 12px">
+          注意右下角
+          <strong style="color: #4d4d4d">防伪标识符</strong>
+          判断该邮件真伪，请定期登录系统并更换
+          <strong>防伪标识符</strong>
+        </small>
+      </div>
+
+      <div style="color: #4d4d4d; font-size: 14px; margin-top: 16px">
+        系统时间：
+        <strong> {{.SysTime}} </strong>
+        请使用该密码登录，并及时修改密码
+      </div>
+    </div>
+    <div
+      style="height: 30px; border-bottom: 1px solid #ccc; margin-bottom: 16px"
+    ></div>
+    <div
+      style="
+        padding: 10px;
+        color: #747474;
+        margin-bottom: 20px;
+        line-height: 1.3em;
+        font-size: 12px;
+        text-align: right;
+      "
+    >
+      <div style="padding-bottom: 16px">
+        此为系统邮件，请勿回复 <br />
+        请保管好您的邮箱，避免账号被他人盗用
+        <div>来自 <span style="color: #000"> {{.Source}} </span> 服务</div>
+      </div>
+      <div><a href="https://mo7.cc">墨七</a></div>
+      <div>
+        防伪标识符： <span style="color: #f60"> {{.SecurityCode}} </span>
+      </div>
+    </div>
+  </body>
+</html>
