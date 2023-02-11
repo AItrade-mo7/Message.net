@@ -11,4 +11,4 @@ var SysEmail string
 var CodeEmail string
 
 //go:embed email-register.html
-var RegisterSucceedEmail string
+var RegisterEmail string
