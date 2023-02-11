@@ -10,6 +10,8 @@ import (
 
 var count = 0
 
+// 监听目录变动
+
 func ListenFolder() {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
