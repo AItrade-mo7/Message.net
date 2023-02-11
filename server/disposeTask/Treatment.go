@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 
 	"Message.net/server/global/config"
-	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mPath"
 	"github.com/EasyGolang/goTools/mTask"
 	jsoniter "github.com/json-iterator/go"
@@ -40,5 +39,12 @@ func ReadTask(path string) {
 	var Task mTask.TaskType
 	jsoniter.Unmarshal(json, &Task)
 
-	mJson.Println(Task.TaskType)
+	switch Task.TaskType {
+	case "SysEmail":
+		SendSysEmail()
+	case "CodeEmail":
+		SendCodeEmail()
+	case "RegisterEmail":
+		SendRegisterEmail()
+	}
 }
