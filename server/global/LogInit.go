@@ -45,8 +45,6 @@ func LogErr(sum ...any) {
 	str := fmt.Sprintf("系统错误: %+v", sum)
 	Log.Println(str)
 
-	fmt.Println("准备发送邮件")
-
 	// 系统的重大错误，必须要发送错误邮件 默认使用企业微信发送
 	EmailServe := mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf")
 	message := ""
@@ -62,7 +60,7 @@ func LogErr(sum ...any) {
 		To: []string{
 			"trade@mo7.cc",
 		},
-		From:        "AItrade",
+		From:        "Message.net",
 		Subject:     "系统错误",
 		TemplateStr: tmpl.SysEmail,
 		SendData: mTask.SysEmailParam{
@@ -74,4 +72,5 @@ func LogErr(sum ...any) {
 			SecurityCode: "trade.mo7.cc",
 		},
 	}).Send()
+	Log.Println("错误邮件已发送")
 }

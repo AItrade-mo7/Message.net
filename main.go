@@ -19,6 +19,8 @@ func main() {
 	// 初始化系统参数
 	global.Start()
 
+	global.LogErr("记录一下错误", "1231", "124", 554)
+
 	// 主要业务逻辑准备
 	ready.Start()
 
