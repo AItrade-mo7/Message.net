@@ -52,7 +52,9 @@ func LogErr(sum ...any) {
 		message = mStr.ToStr(sum[0])
 	}
 	content := mJson.Format(sum)
-	mEmail.New(mEmail.Opt{
+
+	mJson.Println(EmailServe)
+	err := mEmail.New(mEmail.Opt{
 		Account:  EmailServe.Account,
 		Password: EmailServe.Password,
 		Port:     EmailServe.Port,
@@ -72,5 +74,5 @@ func LogErr(sum ...any) {
 			SecurityCode: "trade.mo7.cc",
 		},
 	}).Send()
-	Log.Println("错误邮件已发送")
+	Log.Println("错误邮件已发送", err)
 }
