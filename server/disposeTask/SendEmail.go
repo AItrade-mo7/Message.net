@@ -1,8 +1,7 @@
 package disposeTask
 
 import (
-	"fmt"
-
+	"Message.net/server/global"
 	"Message.net/server/tmpl"
 	"github.com/EasyGolang/goTools/mEmail"
 	"github.com/EasyGolang/goTools/mJson"
@@ -10,13 +9,12 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-// 发送完邮件之后要把发送记录存储到数据库中去
 func SendSysEmail(opt any) {
 	jsonByte := mJson.ToJson(opt)
 	var info mTask.SendEmail
 	jsoniter.Unmarshal(jsonByte, &info)
 
-	emailObj := BuildEmail(EmailOpt{
+	emailOpt := GetEmailOpt(EmailOpt{
 		From:     info.From,
 		To:       info.To,
 		Subject:  info.Subject,
@@ -24,11 +22,10 @@ func SendSysEmail(opt any) {
 		SendData: info.SendData,
 	})
 
-	err := emailObj.Send()
-	fmt.Println("邮件发送完成", err)
+	global.SendEmail(emailOpt) // 发送并存储记录
 }
 
-// ======== 发件池子   ==============
+// ======== 账号池子 ==============
 var EmailAccountList = []mEmail.ServeType{
 	mEmail.Gmail("mo7trade1@gmail.com", "bhmfbovjxnkmcmjb"),
 	mEmail.Gmail("mo7trade2@gmail.com", "mhaqiyalgaiyhoto"),
@@ -46,7 +43,7 @@ type EmailOpt struct {
 	SendData any
 }
 
-func BuildEmail(opt EmailOpt) *mEmail.EmailInfo {
+func GetEmailOpt(opt EmailOpt) mEmail.Opt {
 	if len(opt.From) < 1 {
 		opt.From = "Message.net"
 	}
@@ -70,9 +67,7 @@ func BuildEmail(opt EmailOpt) *mEmail.EmailInfo {
 
 	EmailServe := EmailAccountList[0]
 
-	mJson.Println(EmailServe)
-
-	emailObj := mEmail.New(mEmail.Opt{
+	emailOpt := mEmail.Opt{
 		Account:     EmailServe.Account,
 		Password:    EmailServe.Password,
 		Port:        EmailServe.Port,
@@ -82,6 +77,6 @@ func BuildEmail(opt EmailOpt) *mEmail.EmailInfo {
 		Subject:     opt.Subject,
 		TemplateStr: TemplateStr,
 		SendData:    opt.SendData,
-	})
-	return emailObj
+	}
+	return emailOpt
 }
