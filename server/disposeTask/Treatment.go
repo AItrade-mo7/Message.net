@@ -2,9 +2,9 @@ package disposeTask
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
+	"time"
 
 	"Message.net/server/global"
 	"Message.net/server/global/config"
@@ -17,7 +17,16 @@ import (
 )
 
 func Treatment() {
-	fmt.Println("开始遍历任务目录")
+	// 在这里连接数据库
+	db := mMongo.New(mMongo.Opt{
+		UserName: config.SysEnv.MongoUserName,
+		Password: config.SysEnv.MongoPassword,
+		Address:  config.SysEnv.MongoAddress,
+		DBName:   "Message",
+	}).Connect().Collection("Task")
+	defer global.Run.Println("disposeTask.StoreTask 关闭数据库")
+	defer db.Close()
+
 	fsList, err := os.ReadDir(config.Dir.TaskQueue)
 	if err != nil {
 		// 错误处理
@@ -30,46 +39,40 @@ func Treatment() {
 		Path := filepath.Join(config.Dir.TaskQueue, file.Name())
 		isPath := mPath.Exists(Path)
 		if isPath {
-			ReadTask(Path)
+			ReadTask(Path, db)
 		}
 	}
+
+	time.Sleep(time.Second * 3)
 }
 
-func ReadTask(path string) {
+func ReadTask(path string, db *mMongo.DB) {
 	json, err := os.ReadFile(path)
 	if err != nil {
-		log.Fatal("Error when opening file: ", err)
+		global.LogErr("disposeTask.ReadTask111", err)
 	}
 
 	var Task mTask.TaskType
 	jsoniter.Unmarshal(json, &Task)
 
+	// 任务分配执行区
 	switch Task.TaskType {
 	case "SendEmail":
 		err = SendSysEmail(Task.Content)
 	}
 
+	// 任务存储
 	Task.EndTime = mTime.GetUnixInt64()
 	Task.EndTimeStr = mTime.UnixFormat(Task.EndTime)
 	Task.Result = mStr.ToStr(err)
-	StoreTask(Task)
 
+	db.Table.InsertOne(db.Ctx, Task)
+
+	global.Run.Println("===== 一条 disposeTask.ReadTask 任务执行结束 ======", Task.TaskID)
 	if err == nil {
 		err := os.Remove(path)
 		if err != nil {
 			global.LogErr("disposeTask.ReadTask 任务执行失败!", Task.TaskID)
 		}
 	}
-}
-
-func StoreTask(task mTask.TaskType) {
-	db := mMongo.New(mMongo.Opt{
-		UserName: config.SysEnv.MongoUserName,
-		Password: config.SysEnv.MongoPassword,
-		Address:  config.SysEnv.MongoAddress,
-		DBName:   "Message",
-	}).Connect().Collection("Task")
-	defer global.Run.Println("disposeTask.StoreTask 关闭数据库", task.TaskID)
-	defer db.Close()
-	db.Table.InsertOne(db.Ctx, task)
 }

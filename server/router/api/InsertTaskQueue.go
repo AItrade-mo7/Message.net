@@ -30,5 +30,6 @@ func InsertTaskQueue(c *fiber.Ctx) error {
 	mFile.Write(FilePath, mJson.ToStr(json))
 
 	global.TaskChan <- nowTaskType.TaskID
+
 	return c.JSON(result.Succeed.WithData("Succeed"))
 }
