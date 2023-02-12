@@ -1,8 +1,7 @@
 package api
 
 import (
-	"fmt"
-
+	"Message.net/server/global"
 	"Message.net/server/global/config"
 	"Message.net/server/router/result"
 	"github.com/EasyGolang/goTools/mFiber"
@@ -28,9 +27,8 @@ func InsertTaskQueue(c *fiber.Ctx) error {
 		nowTaskType.TaskID+".json",
 	)
 
-	fmt.Println(FilePath)
-
 	mFile.Write(FilePath, mJson.ToStr(json))
 
+	global.TaskChan <- nowTaskType.TaskID
 	return c.JSON(result.Succeed.WithData("Succeed"))
 }

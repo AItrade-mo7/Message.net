@@ -13,7 +13,7 @@ import (
 )
 
 func Treatment() {
-	fmt.Println("正在处理一条任务,需要4秒钟")
+	fmt.Println("开始遍历任务目录")
 	fsList, err := os.ReadDir(config.Dir.TaskQueue)
 	if err != nil {
 		// 错误处理
