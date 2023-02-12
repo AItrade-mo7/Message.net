@@ -4,8 +4,10 @@ package dbType
 // Email
 type MessageEmail struct {
 	// 自定义
-	SendResult string `bson:"SendResult"`
-	EmailID    string `bson:"EmailID"`
+	SendResult    string `bson:"SendResult"`
+	EmailID       string `bson:"EmailID"`
+	CreateTime    int64  `bson:"CreateTime"`
+	CreateTimeStr string `bson:"CreateTimeStr"`
 	// 来自 mEmail.Opt
 	Account     string   `bson:"Account"`
 	Password    string   `bson:"Password"`

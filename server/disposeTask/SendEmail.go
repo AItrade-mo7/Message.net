@@ -30,9 +30,9 @@ func SendSysEmail(opt any) error {
 var EmailAccountList = []mEmail.ServeType{
 	mEmail.Gmail("mo7trade1@gmail.com", "bhmfbovjxnkmcmjb"),
 	mEmail.Gmail("mo7trade2@gmail.com", "mhaqiyalgaiyhoto"),
-	mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf"),
-	mEmail.QQ("meichangliang@qq.com", "fxdxnbyronppbfha"),
 	mEmail.QQ("mo7trade@qq.com", "aluanmhgxubnbigf"),
+	mEmail.QQ("meichangliang@qq.com", "fxdxnbyronppbfha"),
+	mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf"),
 }
 
 // ======构建邮件的封装===========
@@ -67,6 +67,12 @@ func GetEmailOpt(opt EmailOpt) mEmail.Opt {
 	}
 
 	EmailServe := EmailAccountList[0]
+
+	for _, val := range EmailAccountList {
+		HourCount := global.UseEmailCountHour
+		Hour24Count := global.UseEmailCount24Hour
+
+	}
 
 	emailOpt := mEmail.Opt{
 		Account:     EmailServe.Account,

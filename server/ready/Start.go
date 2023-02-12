@@ -10,6 +10,8 @@ func Start() {
 	// 读取一次目录的任务列表
 	disposeTask.Treatment()
 	go WatchTaskDir()
+
+	SyncEmailUseCount()
 }
 
 func WatchTaskDir() {

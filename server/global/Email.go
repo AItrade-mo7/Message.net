@@ -8,7 +8,13 @@ import (
 	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mMongo"
 	"github.com/EasyGolang/goTools/mStr"
+	"github.com/EasyGolang/goTools/mTime"
 	jsoniter "github.com/json-iterator/go"
+)
+
+var (
+	UseEmailCountHour   map[string]int
+	UseEmailCount24Hour map[string]int
 )
 
 func StoreSendEmail(storeOpt dbType.MessageEmail) {
@@ -33,6 +39,8 @@ func SendEmail(emailOpt mEmail.Opt) error {
 
 	StoreOpt.SendResult = mStr.ToStr(err)
 	StoreOpt.EmailID = mEncrypt.GetUUID()
+	StoreOpt.CreateTime = mTime.GetUnixInt64()
+	StoreOpt.CreateTimeStr = mTime.UnixFormat(StoreOpt.CreateTime)
 
 	Run.Println("邮件已发送", StoreOpt.EmailID, StoreOpt.Subject, StoreOpt.To, err)
 
