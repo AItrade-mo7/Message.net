@@ -9,7 +9,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-func SendSysEmail(opt any) {
+func SendSysEmail(opt any) error {
 	jsonByte := mJson.ToJson(opt)
 	var info mTask.SendEmail
 	jsoniter.Unmarshal(jsonByte, &info)
@@ -22,7 +22,8 @@ func SendSysEmail(opt any) {
 		SendData: info.SendData,
 	})
 
-	global.SendEmail(emailOpt) // 发送并存储记录
+	err := global.SendEmail(emailOpt) // 发送并存储记录
+	return err
 }
 
 // ======== 账号池子 ==============

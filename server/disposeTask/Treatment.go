@@ -6,9 +6,13 @@ import (
 	"os"
 	"path/filepath"
 
+	"Message.net/server/global"
 	"Message.net/server/global/config"
+	"github.com/EasyGolang/goTools/mMongo"
 	"github.com/EasyGolang/goTools/mPath"
+	"github.com/EasyGolang/goTools/mStr"
 	"github.com/EasyGolang/goTools/mTask"
+	"github.com/EasyGolang/goTools/mTime"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -42,8 +46,23 @@ func ReadTask(path string) {
 
 	switch Task.TaskType {
 	case "SendEmail":
-		SendSysEmail(Task.Content)
+		err = SendSysEmail(Task.Content)
 	}
 
-	// 任务处理完要把任务存储到数据库当中去
+	Task.EndTime = mTime.GetUnixInt64()
+	Task.EndTimeStr = mTime.UnixFormat(Task.EndTime)
+	Task.Result = mStr.ToStr(err)
+	StoreTask(Task)
+}
+
+func StoreTask(task mTask.TaskType) {
+	db := mMongo.New(mMongo.Opt{
+		UserName: config.SysEnv.MongoUserName,
+		Password: config.SysEnv.MongoPassword,
+		Address:  config.SysEnv.MongoAddress,
+		DBName:   "Message",
+	}).Connect().Collection("Task")
+	defer global.Run.Println("disposeTask.StoreTask 关闭数据库", task.TaskID)
+	defer db.Close()
+	db.Table.InsertOne(db.Ctx, task)
 }
