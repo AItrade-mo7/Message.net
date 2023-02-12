@@ -1,10 +1,16 @@
 package global
 
 import (
+	"fmt"
 	"log"
 
 	"Message.net/server/global/config"
+	"Message.net/server/tmpl"
+	"github.com/EasyGolang/goTools/mEmail"
+	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mLog"
+	"github.com/EasyGolang/goTools/mStr"
+	"github.com/EasyGolang/goTools/mTask"
 	"github.com/EasyGolang/goTools/mTime"
 )
 
@@ -30,4 +36,42 @@ func LogInit() {
 		Path:      config.Dir.Log,
 		ClearTime: mTime.UnixTimeInt64.Day * 10,
 	})
+
+	config.LogErr = LogErr
+	config.Log = Log
+}
+
+func LogErr(sum ...any) {
+	str := fmt.Sprintf("系统错误: %+v", sum)
+	Log.Println(str)
+
+	fmt.Println("准备发送邮件")
+
+	// 系统的重大错误，必须要发送错误邮件 默认使用企业微信发送
+	EmailServe := mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf")
+	message := ""
+	if len(sum) > 0 {
+		message = mStr.ToStr(sum[0])
+	}
+	content := mJson.Format(sum)
+	mEmail.New(mEmail.Opt{
+		Account:  EmailServe.Account,
+		Password: EmailServe.Password,
+		Port:     EmailServe.Port,
+		Host:     EmailServe.Host,
+		To: []string{
+			"trade@mo7.cc",
+		},
+		From:        "AItrade",
+		Subject:     "系统错误",
+		TemplateStr: tmpl.SysEmail,
+		SendData: mTask.SysEmailParam{
+			Title:        "Message.net 系统出错",
+			Message:      message,
+			Content:      content,
+			SysTime:      mTime.UnixFormat(mTime.GetUnix()),
+			Source:       "Message.net",
+			SecurityCode: "trade.mo7.cc",
+		},
+	}).Send()
 }

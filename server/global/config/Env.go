@@ -25,6 +25,7 @@ func LoadSysEnv(envPath string) {
 	err := viper.ReadInConfig()
 	if err != nil {
 		errStr := fmt.Errorf("sys_env.yaml 读取配置文件出错: %+v", err)
+		LogErr(errStr)
 		panic(errStr)
 	}
 	viper.Unmarshal(&SysEnv)

@@ -15,6 +15,7 @@ func ServerEnvInit() {
 		//
 	} else {
 		errStr := fmt.Errorf("没找到 sys_env.yaml 配置文件")
+		LogErr(errStr)
 		panic(errStr)
 	}
 
