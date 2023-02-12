@@ -53,6 +53,13 @@ func ReadTask(path string) {
 	Task.EndTimeStr = mTime.UnixFormat(Task.EndTime)
 	Task.Result = mStr.ToStr(err)
 	StoreTask(Task)
+
+	if err == nil {
+		err := os.Remove(path)
+		if err != nil {
+			global.Run.Println("disposeTask.ReadTask 任务已删除", Task.TaskID)
+		}
+	}
 }
 
 func StoreTask(task mTask.TaskType) {
