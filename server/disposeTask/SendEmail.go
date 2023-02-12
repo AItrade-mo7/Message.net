@@ -1,9 +1,14 @@
 package disposeTask
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func SendSysEmail() {
-	fmt.Println("发送系统邮件")
+	fmt.Println("发送系统邮件中")
+	time.Sleep(time.Second * 4)
+	fmt.Println("发送结束")
 }
 
 func SendCodeEmail() {
