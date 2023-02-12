@@ -57,7 +57,7 @@ func ReadTask(path string) {
 	if err == nil {
 		err := os.Remove(path)
 		if err != nil {
-			global.Run.Println("disposeTask.ReadTask 任务已删除", Task.TaskID)
+			global.LogErr("disposeTask.ReadTask 任务执行失败!", Task.TaskID)
 		}
 	}
 }
