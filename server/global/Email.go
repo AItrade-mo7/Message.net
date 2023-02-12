@@ -1,20 +1,27 @@
 package global
 
 import (
-	"fmt"
-
+	"Message.net/server/global/config"
 	"Message.net/server/global/dbType"
 	"github.com/EasyGolang/goTools/mEmail"
 	"github.com/EasyGolang/goTools/mEncrypt"
 	"github.com/EasyGolang/goTools/mJson"
+	"github.com/EasyGolang/goTools/mMongo"
 	"github.com/EasyGolang/goTools/mStr"
 	jsoniter "github.com/json-iterator/go"
 )
 
-func StoreSendEmail(emailOpt dbType.MessageEmail) {
-	fmt.Println("数据库存储")
+func StoreSendEmail(storeOpt dbType.MessageEmail) {
+	db := mMongo.New(mMongo.Opt{
+		UserName: config.SysEnv.MongoUserName,
+		Password: config.SysEnv.MongoPassword,
+		Address:  config.SysEnv.MongoAddress,
+		DBName:   "Message",
+	}).Connect().Collection("Email")
+	defer Run.Println("global.StoreSendEmail 关闭数据库", storeOpt.EmailID)
+	defer db.Close()
 
-	mJson.Println(emailOpt)
+	db.Table.InsertOne(db.Ctx, storeOpt)
 }
 
 func SendEmail(emailOpt mEmail.Opt) error {
