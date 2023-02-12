@@ -2,33 +2,24 @@ package disposeTask
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/EasyGolang/goTools/mEmail"
 	"github.com/EasyGolang/goTools/mJson"
+	"github.com/EasyGolang/goTools/mStr"
 	"github.com/EasyGolang/goTools/mTask"
 	jsoniter "github.com/json-iterator/go"
 )
 
-// 发送完邮件之后要把发送记录存储到数据库中去
-func SendSysEmail(opt any) {
-	jsonByte := mJson.ToJson(opt)
-	var EmailOpt mTask.SysEmail
-	jsoniter.Unmarshal(jsonByte, &EmailOpt)
-
-	fmt.Println("发送结束")
-	mJson.Println(EmailOpt)
-}
-
-func SendCodeEmail(opt any) {
-	fmt.Println("发送验证码")
-}
-
-func SendRegisterEmail(opt any) {
-	fmt.Println("发送注册通知")
+var EmailAccountList = []mEmail.ServeType{
+	mEmail.Gmail("meichangliang@gmail.com", "nmqlusfgaeyexxok"),
+	mEmail.Gmail("mo7trade1@gmail.com", "asdasd55555"),
+	mEmail.Gmail("mo7trade2@gmail.com", "asdasd55555"),
+	mEmail.QQ("meichangliang@qq.com", "fxdxnbyronppbfha"),
+	mEmail.WorkWeiXin("trade@mo7.cc", "DXir4WLb2aGaknLZ"),
 }
 
 // 发送邮件的函数
-// 用 gmail 发送
 type EmailOpt struct {
 	From     string
 	To       []string
@@ -37,12 +28,36 @@ type EmailOpt struct {
 	SendData any
 }
 
-func FromGmail(opt EmailOpt) *mEmail.EmailInfo {
+var EmailTmplList = []string{
+	"SysEmail",
+	"CodeEmail",
+	"RegisterEmail",
+}
+
+func BuildEmail(opt EmailOpt) *mEmail.EmailInfo {
+	if len(opt.From) < 1 {
+		opt.From = "Message.net"
+	}
+	if len(opt.To) < 1 {
+		opt.To = []string{"trade@mo7.cc"}
+	}
+	if len(opt.Subject) < 1 {
+		opt.Subject = "Default Subject"
+	}
+
+	sepChart := "&"
+	TmplAll := strings.Join(EmailTmplList, sepChart)
+	TmplAll = mStr.Join(TmplAll, sepChart)
+	TmplNow := mStr.Join(opt.Template, sepChart)
+	findTmpl := strings.Contains(TmplAll, TmplNow)
+
+	if !findTmpl || TmplNow == sepChart {
+		opt.Template = EmailTmplList[0]
+	}
+
+	mJson.Println(opt)
+
 	emailObj := mEmail.New(mEmail.Opt{
-		Account:     "meichangliang@gmail.com",
-		Password:    "nmqlusfgaeyexxok",
-		Port:        "587",
-		Host:        "smtp.gmail.com",
 		To:          opt.To,
 		From:        opt.From,
 		Subject:     opt.Subject,
@@ -52,35 +67,20 @@ func FromGmail(opt EmailOpt) *mEmail.EmailInfo {
 	return emailObj
 }
 
-// 用 企业微信 发送
+// 发送完邮件之后要把发送记录存储到数据库中去
+func SendSysEmail(opt any) {
+	jsonByte := mJson.ToJson(opt)
+	var info mTask.SendEmail
+	jsoniter.Unmarshal(jsonByte, &info)
 
-func FromWorkWeiXin(opt EmailOpt) *mEmail.EmailInfo {
-	emailObj := mEmail.New(mEmail.Opt{
-		Account:     "trade@mo7.cc",
-		Password:    "DXir4WLb2aGaknLZ",
-		Port:        "587",
-		Host:        "smtp.exmail.qq.com",
-		To:          opt.To,
-		From:        opt.From,
-		Subject:     opt.Subject,
-		TemplateStr: opt.Template,
-		SendData:    opt.SendData,
+	emailObj := BuildEmail(EmailOpt{
+		From:     info.From,
+		To:       info.To,
+		Subject:  info.Subject,
+		Template: info.TmplName,
+		SendData: info.SendData,
 	})
-	return emailObj
-}
 
-// 用 qq 发送
-func FromQQ(opt EmailOpt) *mEmail.EmailInfo {
-	emailObj := mEmail.New(mEmail.Opt{
-		Account:     "meichangliang@qq.com",
-		Password:    "fxdxnbyronppbfha",
-		Port:        "587",
-		Host:        "smtp.qq.com",
-		To:          opt.To,
-		From:        opt.From,
-		Subject:     opt.Subject,
-		TemplateStr: opt.Template,
-		SendData:    opt.SendData,
-	})
-	return emailObj
+	err := emailObj.Send()
+	fmt.Println("邮件发送完成", err)
 }

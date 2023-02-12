@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 
 	"Message.net/server/global/config"
-	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mPath"
 	"github.com/EasyGolang/goTools/mTask"
 	jsoniter "github.com/json-iterator/go"
@@ -41,15 +40,9 @@ func ReadTask(path string) {
 	var Task mTask.TaskType
 	jsoniter.Unmarshal(json, &Task)
 
-	mJson.Println(Task)
-
 	switch Task.TaskType {
-	case "SysEmail":
+	case "SendEmail":
 		SendSysEmail(Task.Content)
-	case "CodeEmail":
-		SendCodeEmail(Task.Content)
-	case "RegisterEmail":
-		SendRegisterEmail(Task.Content)
 	}
 
 	// 任务处理完要把任务存储到数据库当中去
