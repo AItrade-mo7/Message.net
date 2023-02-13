@@ -18,3 +18,15 @@ github.com/EasyGolang/goTools => /root/EasyGolang/goTools
 
 
 ```
+
+## sys_env.yaml
+
+```yaml
+# 本地
+MongoAddress: "127.0.0.1:27017"
+MongoUserName: "mo7"
+MongoPassword: "asdasd55555"
+MessageBaseUrl: "http://127.0.0.1:8900"
+# 运行模式
+# RunMod: 1
+```
