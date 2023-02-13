@@ -11,7 +11,7 @@ import (
 )
 
 func StartEmail() {
-	EmailServe := mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf")
+	EmailServe := global.GetEmailServe()
 	emailOpt := mEmail.Opt{
 		Account:  EmailServe.Account,
 		Password: EmailServe.Password,

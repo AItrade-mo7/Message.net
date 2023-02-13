@@ -3,7 +3,6 @@ package disposeTask
 import (
 	"Message.net/server/global"
 	"Message.net/server/tmpl"
-	"github.com/EasyGolang/goTools/mCount"
 	"github.com/EasyGolang/goTools/mEmail"
 	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mTask"
@@ -32,15 +31,6 @@ func SendSysEmail(opt any) error {
 	}
 
 	return err
-}
-
-// ======== 账号池子 ==============
-var EmailAccountList = []mEmail.ServeType{
-	mEmail.Gmail("mo7trade1@gmail.com", "bhmfbovjxnkmcmjb"),
-	mEmail.Gmail("mo7trade2@gmail.com", "mhaqiyalgaiyhoto"),
-	mEmail.QQ("mo7trade@qq.com", "aluanmhgxubnbigf"),
-	mEmail.QQ("meichangliang@qq.com", "fxdxnbyronppbfha"),
-	mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf"),
 }
 
 // ======构建邮件的封装===========
@@ -74,7 +64,7 @@ func GetEmailOpt(opt EmailOpt) mEmail.Opt {
 		TemplateStr = tmpl.RegisterEmail
 	}
 
-	EmailServe := GetEmailServe()
+	EmailServe := global.GetEmailServe()
 
 	emailOpt := mEmail.Opt{
 		Account:     EmailServe.Account,
@@ -88,21 +78,6 @@ func GetEmailOpt(opt EmailOpt) mEmail.Opt {
 		SendData:    opt.SendData,
 	}
 	return emailOpt
-}
-
-func GetEmailServe() (resData mEmail.ServeType) {
-	Len := len(EmailAccountList)
-	index := mCount.GetRound(0, int64(Len-1))
-
-	resData = EmailAccountList[index]
-	HourCount := global.UseEmailCountHour[resData.Account]
-	Hour24Count := global.UseEmailCount24Hour[resData.Account]
-
-	// 小时内 20 封 ; 24 小时内 100 封
-	if HourCount < 20 && Hour24Count < 100 {
-		return
-	}
-	return GetEmailServe()
 }
 
 // 邮件任务的后续处理

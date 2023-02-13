@@ -46,7 +46,7 @@ func LogErr(sum ...any) {
 	Log.Println(str)
 
 	// 系统的重大错误，必须要发送错误邮件 默认使用企业微信发送
-	EmailServe := mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf")
+	EmailServe := GetEmailServe()
 	message := ""
 	if len(sum) > 0 {
 		message = mStr.ToStr(sum[0])

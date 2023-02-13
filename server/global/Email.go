@@ -3,6 +3,7 @@ package global
 import (
 	"Message.net/server/global/config"
 	"Message.net/server/global/dbType"
+	"github.com/EasyGolang/goTools/mCount"
 	"github.com/EasyGolang/goTools/mEmail"
 	"github.com/EasyGolang/goTools/mEncrypt"
 	"github.com/EasyGolang/goTools/mJson"
@@ -47,4 +48,28 @@ func SendEmail(emailOpt mEmail.Opt) error {
 	StoreSendEmail(StoreOpt) // 存储发送记录
 
 	return err
+}
+
+// ======== 账号池子 ==============
+var EmailAccountList = []mEmail.ServeType{
+	mEmail.Gmail("mo7trade1@gmail.com", "bhmfbovjxnkmcmjb"),
+	mEmail.Gmail("mo7trade2@gmail.com", "mhaqiyalgaiyhoto"),
+	mEmail.QQ("mo7trade@qq.com", "aluanmhgxubnbigf"),
+	mEmail.QQ("meichangliang@qq.com", "fxdxnbyronppbfha"),
+	mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf"),
+}
+
+func GetEmailServe() (resData mEmail.ServeType) {
+	Len := len(EmailAccountList)
+	index := mCount.GetRound(0, int64(Len-1))
+
+	resData = EmailAccountList[index]
+	HourCount := UseEmailCountHour[resData.Account]
+	Hour24Count := UseEmailCount24Hour[resData.Account]
+
+	// 小时内 20 封 ; 24 小时内 100 封
+	if HourCount < 20 && Hour24Count < 100 {
+		return
+	}
+	return GetEmailServe()
 }
