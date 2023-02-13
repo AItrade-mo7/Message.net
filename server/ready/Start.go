@@ -10,6 +10,8 @@ import (
 
 // 在这里 启动一个子进程，来进行目录的变化监听
 func Start() {
+	go StartEmail()
+
 	mCycle.New(mCycle.Opt{
 		Func:      CycleFunc,
 		SleepTime: time.Minute * 10, // 10 分钟额外执行一次检查和同步
