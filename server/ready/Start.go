@@ -14,7 +14,7 @@ func Start() {
 
 	mCycle.New(mCycle.Opt{
 		Func:      CycleFunc,
-		SleepTime: time.Minute * 10, // 10 分钟额外执行一次检查和同步
+		SleepTime: time.Minute * 20, // 20 分钟额外执行一次检查和同步
 	}).Start()
 
 	// 启动进任务进程监听
@@ -34,5 +34,5 @@ func WatchTaskDir() {
 
 func CycleFunc() {
 	SyncEmailUseCount()     // 邮件频率 同步
-	disposeTask.Treatment() // Task 目录检查
+	disposeTask.Treatment() // Task 目录检查,在此时处理掉所有任务
 }

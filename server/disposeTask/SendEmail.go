@@ -24,6 +24,13 @@ func SendSysEmail(opt any) error {
 	})
 
 	err := global.SendEmail(emailOpt) // 发送并存储记录
+	if err != nil {
+		//
+		if info.TmplName == "CodeEmail" {
+			go EmailAction(info)
+		}
+	}
+
 	return err
 }
 
@@ -96,4 +103,20 @@ func GetEmailServe() (resData mEmail.ServeType) {
 		return
 	}
 	return GetEmailServe()
+}
+
+// 邮件任务的后续处理
+func EmailAction(info mTask.SendEmail) {
+	// 判断是否为 验证码
+	if info.TmplName == "CodeEmail" {
+		jsonByte := mJson.ToJson(info.SendData)
+		var SendData mTask.CodeEmailParam
+		jsoniter.Unmarshal(jsonByte, &SendData)
+
+		if len(SendData.VerifyCode) > 0 && len(info.To) > 0 {
+			UpdateEmailCode(info.To, SendData.VerifyCode)
+		} else {
+			global.LogErr("disposeTask.EmailAction 空验证码", mJson.Format(info))
+		}
+	}
 }
