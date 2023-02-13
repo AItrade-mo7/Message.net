@@ -53,13 +53,11 @@ func LogErr(sum ...any) {
 	}
 	content := mJson.Format(sum)
 	emailOpt := mEmail.Opt{
-		Account:  EmailServe.Account,
-		Password: EmailServe.Password,
-		Port:     EmailServe.Port,
-		Host:     EmailServe.Host,
-		To: []string{
-			"trade@mo7.cc",
-		},
+		Account:     EmailServe.Account,
+		Password:    EmailServe.Password,
+		Port:        EmailServe.Port,
+		Host:        EmailServe.Host,
+		To:          []string{"trade@mo7.cc"},
 		From:        "Message.net",
 		Subject:     "系统错误",
 		TemplateStr: tmpl.SysEmail,
