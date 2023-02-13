@@ -4,6 +4,7 @@ import (
 	"Message.net/server/global"
 	"Message.net/server/global/config"
 	"Message.net/server/global/dbType"
+	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mMongo"
 	"github.com/EasyGolang/goTools/mTime"
 	"go.mongodb.org/mongo-driver/bson"
@@ -37,6 +38,11 @@ func SyncEmailUseCount() {
 		nowCount++
 		global.UseEmailCount24Hour[val.Account] = nowCount
 	}
+
+	global.Run.Println("同步发信频率",
+		mJson.Format(global.UseEmailCountHour),
+		mJson.Format(global.UseEmailCount24Hour),
+	)
 }
 
 func HourQuery(db *mMongo.DB, hour int64) []dbType.MessageEmail {

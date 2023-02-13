@@ -1,10 +1,8 @@
 package disposeTask
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 
 	"Message.net/server/global"
 	"Message.net/server/global/config"
@@ -30,7 +28,7 @@ func Treatment() {
 	fsList, err := os.ReadDir(config.Dir.TaskQueue)
 	if err != nil {
 		// 错误处理
-		fmt.Println("ready.Treatment", err)
+		global.LogErr("disposeTask.Treatment", err)
 	}
 	for _, file := range fsList {
 		if file.IsDir() {
@@ -42,8 +40,6 @@ func Treatment() {
 			ReadTask(Path, db)
 		}
 	}
-
-	time.Sleep(time.Second * 3)
 }
 
 func ReadTask(path string, db *mMongo.DB) {
