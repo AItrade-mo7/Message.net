@@ -3,6 +3,7 @@ package disposeTask
 import (
 	"Message.net/server/global"
 	"Message.net/server/tmpl"
+	"github.com/EasyGolang/goTools/mCount"
 	"github.com/EasyGolang/goTools/mEmail"
 	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mTask"
@@ -66,13 +67,7 @@ func GetEmailOpt(opt EmailOpt) mEmail.Opt {
 		TemplateStr = tmpl.RegisterEmail
 	}
 
-	EmailServe := EmailAccountList[0]
-
-	for _, val := range EmailAccountList {
-		HourCount := global.UseEmailCountHour
-		Hour24Count := global.UseEmailCount24Hour
-
-	}
+	EmailServe := GetEmailServe()
 
 	emailOpt := mEmail.Opt{
 		Account:     EmailServe.Account,
@@ -86,4 +81,19 @@ func GetEmailOpt(opt EmailOpt) mEmail.Opt {
 		SendData:    opt.SendData,
 	}
 	return emailOpt
+}
+
+func GetEmailServe() (resData mEmail.ServeType) {
+	Len := len(EmailAccountList)
+	index := mCount.GetRound(0, int64(Len-1))
+
+	resData = EmailAccountList[index]
+	HourCount := global.UseEmailCountHour[resData.Account]
+	Hour24Count := global.UseEmailCount24Hour[resData.Account]
+
+	// 小时内 20 封 ; 24 小时内 100 封
+	if HourCount < 20 && Hour24Count < 100 {
+		return
+	}
+	return GetEmailServe()
 }
