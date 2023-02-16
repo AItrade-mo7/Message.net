@@ -23,12 +23,12 @@ func SendSysEmail(opt any) error {
 		SendData: info.SendData,
 	})
 
-	err := global.SendEmail(emailOpt) // 发送并存储记录
-	if err != nil {
-		//
-		if info.TmplName == "CodeEmail" {
-			go EmailAction(info)
-		}
+	// 发送并存储记录
+	err := global.SendEmail(emailOpt)
+
+	// 确认没有错误
+	if err == nil {
+		go EmailAction(info)
 	}
 
 	return err
@@ -83,7 +83,7 @@ func GetEmailOpt(opt EmailOpt) mEmail.Opt {
 
 // 邮件任务的后续处理
 func EmailAction(info mTask.SendEmail) {
-	// 判断是否为 验证码
+	// 判断是否为 验证码类型的邮件
 	if info.TmplName == "CodeEmail" {
 		jsonByte := mJson.ToJson(info.SendData)
 		var SendData mTask.CodeEmailParam
