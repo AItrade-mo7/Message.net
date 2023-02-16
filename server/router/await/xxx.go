@@ -1,4 +1,4 @@
-package async
+package await
 
 import (
 	"Message.net/server/router/result"

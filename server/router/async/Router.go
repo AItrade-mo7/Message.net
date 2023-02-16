@@ -11,5 +11,5 @@ import (
 func Router(router fiber.Router) {
 	r := router.Group("/async", MiddleWare)
 
-	r.Post("/xxx", xxx)
+	r.Post("/InsertTaskQueue", InsertTaskQueue)
 }
