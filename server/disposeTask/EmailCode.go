@@ -18,7 +18,6 @@ func UpdateEmailCode(info mTask.SendEmail) {
 	jsonByte := mJson.ToJson(info.SendData)
 	var SendData mTask.CodeEmailParam
 	jsoniter.Unmarshal(jsonByte, &SendData)
-	mJson.Println(info)
 
 	db := mMongo.New(mMongo.Opt{
 		UserName: config.SysEnv.MongoUserName,
@@ -29,12 +28,12 @@ func UpdateEmailCode(info mTask.SendEmail) {
 	defer global.Run.Println("disposeTask.UpdateEmailCode 关闭数据库")
 	defer db.Close()
 
-	FK := bson.D{}
-	UK := bson.D{}
-
 	nowTime := mTime.GetUnixInt64()
+	upOpt := options.Update()
+	upOpt.SetUpsert(true)
 
 	for _, val := range info.To {
+		FK := bson.D{}
 		FK = append(FK, bson.E{
 			Key:   "Email",
 			Value: val,
@@ -44,6 +43,7 @@ func UpdateEmailCode(info mTask.SendEmail) {
 			Code:     SendData.VerifyCode,
 			SendTime: nowTime,
 		}
+		UK := bson.D{}
 		mStruct.Traverse(EmailCode, func(key string, val any) {
 			UK = append(UK, bson.E{
 				Key: "$set",
@@ -55,12 +55,11 @@ func UpdateEmailCode(info mTask.SendEmail) {
 				},
 			})
 		})
-	}
 
-	upOpt := options.Update()
-	upOpt.SetUpsert(true)
-	_, err := db.Table.UpdateMany(db.Ctx, FK, UK, upOpt)
-	if err != nil {
-		global.LogErr("disposeTask.UpdateEmailCode 数据更插失败", err)
+		_, err := db.Table.UpdateOne(db.Ctx, FK, UK, upOpt)
+		if err != nil {
+			global.LogErr("disposeTask.UpdateEmailCode 数据更插失败", err)
+		}
+
 	}
 }
