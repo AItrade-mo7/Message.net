@@ -13,10 +13,12 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-var (
-	UseEmailCountHour   map[string]int
-	UseEmailCount24Hour map[string]int
-)
+type EmailCountType struct {
+	Hour   int
+	Hour24 int
+}
+
+var EmailCount map[string]EmailCountType
 
 func StoreSendEmail(storeOpt dbType.MessageEmail) {
 	db := mMongo.New(mMongo.Opt{
@@ -64,11 +66,10 @@ func GetEmailServe() (resData mEmail.ServeType) {
 	index := mCount.GetRound(0, int64(Len-1))
 
 	resData = EmailAccountList[index]
-	HourCount := UseEmailCountHour[resData.Account]
-	Hour24Count := UseEmailCount24Hour[resData.Account]
+	HourCount := EmailCount[resData.Account]
 
 	// 小时内 20 封 ; 24 小时内 100 封
-	if HourCount < 20 && Hour24Count < 100 {
+	if HourCount.Hour < 20 && HourCount.Hour24 < 100 {
 		return
 	}
 	return GetEmailServe()

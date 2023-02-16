@@ -22,26 +22,35 @@ func SyncEmailUseCount() {
 	defer global.Run.Println("global.SyncEmailUseCount 同步一次发信频率")
 	defer db.Close()
 
-	global.UseEmailCountHour = make(map[string]int)
-	global.UseEmailCount24Hour = make(map[string]int)
+	UseEmailCountHour := make(map[string]int)
+	UseEmailCount24Hour := make(map[string]int)
+
+	global.EmailCount = make(map[string]global.EmailCountType)
+
 	HourList := HourQuery(db, 1)
 	Hour24List := HourQuery(db, 24)
 
 	for _, val := range HourList {
-		nowCount := global.UseEmailCountHour[val.Account]
+		nowCount := UseEmailCountHour[val.Account]
 		nowCount++
-		global.UseEmailCountHour[val.Account] = nowCount
+		UseEmailCountHour[val.Account] = nowCount
 	}
 
 	for _, val := range Hour24List {
-		nowCount := global.UseEmailCount24Hour[val.Account]
+		nowCount := UseEmailCount24Hour[val.Account]
 		nowCount++
-		global.UseEmailCount24Hour[val.Account] = nowCount
+		UseEmailCount24Hour[val.Account] = nowCount
+	}
+
+	for _, val := range global.EmailAccountList {
+		global.EmailCount[val.Account] = global.EmailCountType{
+			Hour:   UseEmailCountHour[val.Account],
+			Hour24: UseEmailCount24Hour[val.Account],
+		}
 	}
 
 	global.Run.Println("同步发信频率",
-		mJson.Format(global.UseEmailCountHour),
-		mJson.Format(global.UseEmailCount24Hour),
+		mJson.Format(global.EmailCount),
 	)
 }
 
