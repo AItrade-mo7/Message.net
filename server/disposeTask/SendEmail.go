@@ -2,6 +2,7 @@ package disposeTask
 
 import (
 	"Message.net/server/global"
+	"Message.net/server/global/config"
 	"Message.net/server/tmpl"
 	"github.com/EasyGolang/goTools/mEmail"
 	"github.com/EasyGolang/goTools/mJson"
@@ -44,7 +45,7 @@ type EmailOpt struct {
 
 func GetEmailOpt(opt EmailOpt) mEmail.Opt {
 	if len(opt.From) < 1 {
-		opt.From = "Message.net"
+		opt.From = config.SysName
 	}
 	if len(opt.To) < 1 {
 		opt.To = []string{"trade@mo7.cc"}

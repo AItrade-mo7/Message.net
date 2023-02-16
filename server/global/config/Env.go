@@ -6,6 +6,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+var SysName = "Message.net"
+
 var AppInfo struct {
 	Name    string `bson:"name"`
 	Version string `bson:"version"`

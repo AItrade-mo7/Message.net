@@ -58,7 +58,7 @@ func LogErr(sum ...any) {
 		Port:        EmailServe.Port,
 		Host:        EmailServe.Host,
 		To:          []string{"trade@mo7.cc"},
-		From:        "Message.net",
+		From:        config.SysName,
 		Subject:     "系统错误",
 		TemplateStr: tmpl.SysEmail,
 		SendData: mTask.SysEmailParam{
@@ -66,7 +66,7 @@ func LogErr(sum ...any) {
 			Message:      message,
 			Content:      content,
 			SysTime:      mTime.UnixFormat(mTime.GetUnix()),
-			Source:       "Message.net",
+			Source:       config.SysName,
 			SecurityCode: "trade.mo7.cc",
 		},
 	}

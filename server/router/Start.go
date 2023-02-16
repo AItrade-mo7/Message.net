@@ -28,7 +28,7 @@ func Start() {
 
 	// 创建服务
 	app := fiber.New(fiber.Config{
-		ServerHeader: "Message.net",
+		ServerHeader: config.SysName,
 	})
 
 	// 跨域

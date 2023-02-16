@@ -4,6 +4,7 @@ import (
 	"path"
 	"strings"
 
+	"Message.net/server/global/config"
 	"Message.net/server/router/result"
 	"github.com/EasyGolang/goTools/mStr"
 	"github.com/gofiber/fiber/v2"
@@ -33,7 +34,7 @@ func Public(c *fiber.Ctx) error {
 }
 
 func AddHeader(c *fiber.Ctx) error {
-	c.Set("Data-Path", "Message.net")
+	c.Set("Data-Path", config.SysName)
 
 	return nil
 }

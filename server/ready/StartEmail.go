@@ -20,7 +20,7 @@ func StartEmail() {
 		To: []string{
 			"trade@mo7.cc",
 		},
-		From:        "Message.net",
+		From:        config.SysName,
 		Subject:     "服务启动",
 		TemplateStr: tmpl.SysEmail,
 		SendData: mTask.SysEmailParam{
@@ -28,7 +28,7 @@ func StartEmail() {
 			Message:      "服务启动",
 			Content:      mJson.Format(config.AppInfo),
 			SysTime:      mTime.UnixFormat(mTime.GetUnix()),
-			Source:       "Message.net",
+			Source:       config.SysName,
 			SecurityCode: "trade.mo7.cc",
 		},
 	}
