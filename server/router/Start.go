@@ -7,8 +7,9 @@ import (
 	"Message.net/server/global"
 	"Message.net/server/global/config"
 	"Message.net/server/router/api"
+	"Message.net/server/router/async"
+	"Message.net/server/router/await"
 	"Message.net/server/router/middle"
-	"Message.net/server/router/public"
 	"github.com/EasyGolang/goTools/mStr"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -45,8 +46,11 @@ func Start() {
 
 	// api
 	r_api := app.Group("/api")
-	// /api/public
-	public.Router(r_api)
+	// /api/await
+	await.Router(r_api)
+
+	// /api/async
+	async.Router(r_api)
 
 	// 静态文件服务器
 	app.Use(api.Ping)

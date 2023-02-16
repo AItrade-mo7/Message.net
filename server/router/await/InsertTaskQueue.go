@@ -1,4 +1,4 @@
-package api
+package await
 
 import (
 	"Message.net/server/global"
@@ -20,7 +20,7 @@ func InsertTaskQueue(c *fiber.Ctx) error {
 	if err != nil {
 		return c.JSON(result.Fail.WithMsg(err))
 	}
-	// 把任务写到 目录当中
+	// 把任务写到 目录当中 然后立即返回
 	FilePath := mStr.Join(
 		config.Dir.TaskQueue,
 		"/",
