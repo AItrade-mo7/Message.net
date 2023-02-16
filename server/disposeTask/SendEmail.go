@@ -90,7 +90,7 @@ func EmailAction(info mTask.SendEmail) {
 		jsoniter.Unmarshal(jsonByte, &SendData)
 
 		if len(SendData.VerifyCode) > 0 && len(info.To) > 0 {
-			UpdateEmailCode(info.To, SendData.VerifyCode)
+			UpdateEmailCode(info)
 		} else {
 			global.LogErr("disposeTask.EmailAction 空验证码", mJson.Format(info))
 		}

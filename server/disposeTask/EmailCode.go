@@ -1,17 +1,25 @@
 package disposeTask
 
 import (
-	"fmt"
-
 	"Message.net/server/global"
 	"Message.net/server/global/config"
+	"Message.net/server/global/dbType"
+	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mMongo"
+	"github.com/EasyGolang/goTools/mStruct"
+	"github.com/EasyGolang/goTools/mTask"
+	"github.com/EasyGolang/goTools/mTime"
+	jsoniter "github.com/json-iterator/go"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func UpdateEmailCode(to []string, code string) {
-	fmt.Println("存储验证码", to, code)
+func UpdateEmailCode(info mTask.SendEmail) {
+	jsonByte := mJson.ToJson(info.SendData)
+	var SendData mTask.CodeEmailParam
+	jsoniter.Unmarshal(jsonByte, &SendData)
+	mJson.Println(info)
+
 	db := mMongo.New(mMongo.Opt{
 		UserName: config.SysEnv.MongoUserName,
 		Password: config.SysEnv.MongoPassword,
@@ -23,20 +31,29 @@ func UpdateEmailCode(to []string, code string) {
 
 	FK := bson.D{}
 	UK := bson.D{}
-	for _, val := range to {
 
+	nowTime := mTime.GetUnixInt64()
+
+	for _, val := range info.To {
 		FK = append(FK, bson.E{
-			Key:   val,
-			Value: code,
+			Key:   "Email",
+			Value: val,
 		})
-		UK = append(UK, bson.E{
-			Key: "$set",
-			Value: bson.D{
-				{
-					Key:   val,
-					Value: code,
+		EmailCode := dbType.EmailCodeTable{
+			Email:    val,
+			Code:     SendData.VerifyCode,
+			SendTime: nowTime,
+		}
+		mStruct.Traverse(EmailCode, func(key string, val any) {
+			UK = append(UK, bson.E{
+				Key: "$set",
+				Value: bson.D{
+					{
+						Key:   key,
+						Value: val,
+					},
 				},
-			},
+			})
 		})
 	}
 
