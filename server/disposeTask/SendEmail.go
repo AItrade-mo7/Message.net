@@ -2,97 +2,74 @@ package disposeTask
 
 import (
 	"Message.net/server/global"
-	"Message.net/server/global/config"
 	"Message.net/server/tmpl"
 	"github.com/EasyGolang/goTools/mEmail"
 	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mTask"
-	jsoniter "github.com/json-iterator/go"
 )
 
-func SendSysEmail(opt any) error {
-	jsonByte := mJson.ToJson(opt)
-	var info mTask.SendEmail
-	jsoniter.Unmarshal(jsonByte, &info)
-
-	emailOpt := GetEmailOpt(EmailOpt{
-		From:     info.From,
-		To:       info.To,
-		Subject:  info.Subject,
-		TmplName: info.TmplName,
-		SendData: info.SendData,
-	})
-
-	// 发送并存储记录
-	err := global.SendEmail(emailOpt)
-
-	// 确认没有错误
-	if err == nil {
-		go EmailAction(info)
-	}
-
-	return err
-}
-
-// ======构建邮件的封装===========
-type EmailOpt struct {
-	From     string
-	To       []string
-	Subject  string
-	TmplName string
-	SendData any
-}
-
-func GetEmailOpt(opt EmailOpt) mEmail.Opt {
-	if len(opt.From) < 1 {
-		opt.From = config.SysName
-	}
-	if len(opt.To) < 1 {
-		opt.To = []string{"trade@mo7.cc"}
-	}
-	if len(opt.Subject) < 1 {
-		opt.Subject = "Default Subject"
-	}
-
-	TemplateStr := tmpl.SysEmail
-
-	switch opt.TmplName {
-	case "SysEmail":
-		TemplateStr = tmpl.SysEmail
-	case "CodeEmail":
-		TemplateStr = tmpl.CodeEmail
-	case "RegisterEmail":
-		TemplateStr = tmpl.RegisterEmail
-	}
-
+// ======= 发送系统邮件 =======
+func SendSysEmail(TaskCont mTask.SysEmail) error {
 	EmailServe := global.GetEmailServe()
-
 	emailOpt := mEmail.Opt{
 		Account:     EmailServe.Account,
 		Password:    EmailServe.Password,
 		Port:        EmailServe.Port,
 		Host:        EmailServe.Host,
-		To:          opt.To,
-		From:        opt.From,
-		Subject:     opt.Subject,
-		TemplateStr: TemplateStr,
-		SendData:    opt.SendData,
+		To:          TaskCont.To,
+		From:        TaskCont.From,
+		Subject:     TaskCont.Subject,
+		TemplateStr: tmpl.SysEmail, //  采用系统模板
+		SendData:    TaskCont.SendData,
 	}
-	return emailOpt
+	// 发送并存储记录
+	err := global.SendEmail(emailOpt)
+	return err
 }
 
-// 邮件任务的后续处理
-func EmailAction(info mTask.SendEmail) {
-	// 判断是否为 验证码类型的邮件
-	if info.TmplName == "CodeEmail" {
-		jsonByte := mJson.ToJson(info.SendData)
-		var SendData mTask.CodeEmailParam
-		jsoniter.Unmarshal(jsonByte, &SendData)
-
-		if len(SendData.VerifyCode) > 0 && len(info.To) > 0 {
-			UpdateEmailCode(info)
+// ======= 发送 验证码 邮件 =======
+func SendCodeEmail(TaskCont mTask.CodeEmail) error {
+	EmailServe := global.GetEmailServe()
+	emailOpt := mEmail.Opt{
+		Account:     EmailServe.Account,
+		Password:    EmailServe.Password,
+		Port:        EmailServe.Port,
+		Host:        EmailServe.Host,
+		To:          TaskCont.To,
+		From:        TaskCont.From,
+		Subject:     TaskCont.Subject,
+		TemplateStr: tmpl.CodeEmail, //  采用验证码模板
+		SendData:    TaskCont.SendData,
+	}
+	// 发送并存储记录
+	err := global.SendEmail(emailOpt)
+	// err 为 nil 的时候
+	if err == nil {
+		if len(TaskCont.SendData.VerifyCode) > 0 && len(TaskCont.To) > 0 {
+			UpdateEmailCode(TaskCont)
 		} else {
-			global.LogErr("disposeTask.EmailAction 空验证码", mJson.Format(info))
+			global.LogErr("disposeTask.EmailAction 空验证码", mJson.Format(TaskCont))
 		}
 	}
+
+	return err
+}
+
+// ======= 发送注册成功邮件 =======
+func SendRegisterSucceedEmail(TaskCont mTask.RegisterSucceedEmail) error {
+	EmailServe := global.GetEmailServe()
+	emailOpt := mEmail.Opt{
+		Account:     EmailServe.Account,
+		Password:    EmailServe.Password,
+		Port:        EmailServe.Port,
+		Host:        EmailServe.Host,
+		To:          TaskCont.To,
+		From:        TaskCont.From,
+		Subject:     TaskCont.Subject,
+		TemplateStr: tmpl.RegisterSucceedEmail, //  采用系统模板
+		SendData:    TaskCont.SendData,
+	}
+	// 发送并存储记录
+	err := global.SendEmail(emailOpt)
+	return err
 }

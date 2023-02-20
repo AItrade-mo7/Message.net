@@ -6,6 +6,7 @@ import (
 
 	"Message.net/server/global"
 	"Message.net/server/global/config"
+	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mMongo"
 	"github.com/EasyGolang/goTools/mPath"
 	"github.com/EasyGolang/goTools/mStr"
@@ -45,16 +46,27 @@ func Treatment() {
 func ReadTask(path string, db *mMongo.DB) {
 	json, err := os.ReadFile(path)
 	if err != nil {
-		global.LogErr("disposeTask.ReadTask111", err)
+		global.LogErr("disposeTask.ReadTask-1", err)
 	}
 
 	var Task mTask.TaskType
 	jsoniter.Unmarshal(json, &Task)
 
 	// 任务分配执行区
+
 	switch Task.TaskType {
-	case "SendEmail":
-		err = SendSysEmail(Task.Content)
+	case "SysEmail":
+		var SysObj mTask.SysEmail
+		jsoniter.Unmarshal(mJson.ToJson(Task.Content), &SysObj)
+		err = SendSysEmail(SysObj)
+	case "CodeEmail":
+		var CodeObj mTask.CodeEmail
+		jsoniter.Unmarshal(mJson.ToJson(Task.Content), &CodeObj)
+		err = SendCodeEmail(CodeObj)
+	case "RegisterSucceedEmail":
+		var RegisterSucceedObj mTask.RegisterSucceedEmail
+		jsoniter.Unmarshal(mJson.ToJson(Task.Content), &RegisterSucceedObj)
+		err = SendRegisterSucceedEmail(RegisterSucceedObj)
 	}
 
 	// 任务存储
@@ -67,8 +79,8 @@ func ReadTask(path string, db *mMongo.DB) {
 	global.Run.Println("===== 一条 disposeTask.ReadTask 任务执行结束 ======", Task.TaskID)
 	if err == nil {
 		err := os.Remove(path)
-		if err != nil {
-			global.LogErr("disposeTask.ReadTask 任务执行失败!", Task.TaskID)
-		}
+		global.LogErr("disposeTask.ReadTask-2 任务删除失败!", err)
+	} else {
+		global.LogErr("disposeTask.ReadTask-3 任务执行失败!", Task.TaskID)
 	}
 }

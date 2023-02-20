@@ -4,11 +4,11 @@ import (
 	_ "embed"
 )
 
-//go:embed email-sys.html
+//go:embed email-Code.html
 var SysEmail string
 
-//go:embed email-code.html
+//go:embed email-Code.html
 var CodeEmail string
 
-//go:embed email-register.html
-var RegisterEmail string
+//go:embed email-RegisterSucceed.html
+var RegisterSucceedEmail string

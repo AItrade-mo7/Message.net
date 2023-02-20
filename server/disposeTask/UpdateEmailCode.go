@@ -4,21 +4,15 @@ import (
 	"Message.net/server/global"
 	"Message.net/server/global/config"
 	"Message.net/server/global/dbType"
-	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mMongo"
 	"github.com/EasyGolang/goTools/mStruct"
 	"github.com/EasyGolang/goTools/mTask"
 	"github.com/EasyGolang/goTools/mTime"
-	jsoniter "github.com/json-iterator/go"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func UpdateEmailCode(info mTask.SendEmail) {
-	jsonByte := mJson.ToJson(info.SendData)
-	var SendData mTask.CodeEmailParam
-	jsoniter.Unmarshal(jsonByte, &SendData)
-
+func UpdateEmailCode(info mTask.CodeEmail) {
 	db := mMongo.New(mMongo.Opt{
 		UserName: config.SysEnv.MongoUserName,
 		Password: config.SysEnv.MongoPassword,
@@ -40,7 +34,7 @@ func UpdateEmailCode(info mTask.SendEmail) {
 		})
 		EmailCode := dbType.EmailCodeTable{
 			Email:    val,
-			Code:     SendData.VerifyCode,
+			Code:     info.SendData.VerifyCode,
 			SendTime: nowTime,
 		}
 		UK := bson.D{}
