@@ -81,9 +81,8 @@ func ReadTask(path string, db *mMongo.DB) {
 		global.LogErr("disposeTask.ReadTask-2 任务执行失败!", Task.TaskID)
 		return
 	} else {
-		isPath := mPath.Exists(path)
-		if isPath {
-			err = os.Remove(path)
+		err = os.Remove(path)
+		if err != nil {
 			global.LogErr("disposeTask.ReadTask-3 任务删除失败!", err)
 		}
 	}
