@@ -11,3 +11,5 @@ var MyEmailList = []mEmail.ServeType{
 	mEmail.QQ("mo7trade@qq.com", "aluanmhgxubnbigf"),
 	mEmail.QQ("meichangliang@qq.com", "fxdxnbyronppbfha"),
 }
+
+var SysEmail = "meichangliang@outlook.com"

@@ -57,7 +57,7 @@ func LogErr(sum ...any) {
 		Password:    EmailServe.Password,
 		Port:        EmailServe.Port,
 		Host:        EmailServe.Host,
-		To:          []string{"trade@mo7.cc"},
+		To:          []string{config.SysEmail},
 		From:        config.SysName,
 		Subject:     "系统错误",
 		TemplateStr: tmpl.SysEmail,

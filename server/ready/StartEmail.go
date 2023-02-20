@@ -13,13 +13,11 @@ import (
 func StartEmail() {
 	EmailServe := global.GetEmailServe()
 	emailOpt := mEmail.Opt{
-		Account:  EmailServe.Account,
-		Password: EmailServe.Password,
-		Port:     EmailServe.Port,
-		Host:     EmailServe.Host,
-		To: []string{
-			"trade@mo7.cc",
-		},
+		Account:     EmailServe.Account,
+		Password:    EmailServe.Password,
+		Port:        EmailServe.Port,
+		Host:        EmailServe.Host,
+		To:          []string{config.SysEmail},
 		From:        config.SysName,
 		Subject:     "服务启动",
 		TemplateStr: tmpl.SysEmail,
