@@ -7,7 +7,7 @@ import (
 	"github.com/EasyGolang/goTools/mStr"
 )
 
-type DirType struct {
+var Dir struct {
 	Home      string // Home 根目录
 	App       string // APP 根目录
 	Log       string // 日志文件目录
@@ -15,14 +15,10 @@ type DirType struct {
 	TaskQueue string // 任务队列
 }
 
-var Dir DirType
-
-type FileType struct {
-	SysEnv      string // /root/sys_env.yaml
+var File struct {
+	SysEnv      string // ~/sys_env.yaml
 	LocalSysEnv string // ./sys_env.yaml
 }
-
-var File FileType
 
 func DirInit() {
 	Dir.Home = mPath.HomePath()
@@ -71,7 +67,7 @@ func DirInit() {
 		os.MkdirAll(Dir.Log, 0o777)
 	}
 
-	// 检测  目录
+	// 检测 TaskQueue 目录
 	isTaskQueuePath := mPath.Exists(Dir.TaskQueue)
 	if !isTaskQueuePath {
 		// 不存在则创建 logs 目录

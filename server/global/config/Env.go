@@ -20,7 +20,6 @@ var SysEnv struct {
 	MongoPassword  string
 	MongoUserName  string
 	MessageBaseUrl string
-	RunMod         int // 0 则为正常模式 ， 1 则为数据模拟模式
 }
 
 func DefaultSysEnv() {
@@ -28,7 +27,6 @@ func DefaultSysEnv() {
 	SysEnv.MongoPassword = "mo7"
 	SysEnv.MongoUserName = "asdasd55555"
 	SysEnv.MessageBaseUrl = "http://msg.mo7.cc"
-	SysEnv.RunMod = 0
 }
 
 func LoadSysEnv(envPath string) {
