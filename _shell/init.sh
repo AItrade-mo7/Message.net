@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source "/etc/profile"
+source "$HOME/.profile"
+
 function GitSet {
   echo " ====== git设置大小写敏感,文件权限变更 ====== "
   git config core.ignorecase false
