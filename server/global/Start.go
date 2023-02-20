@@ -19,7 +19,6 @@ func Start() {
 	}).Start()
 
 	// 加载 SysEnv
-
 	config.ServerEnvInit()
 
 	Log.Println(
