@@ -42,7 +42,7 @@ func SyncEmailUseCount() {
 		UseEmailCount24Hour[val.Account] = nowCount
 	}
 
-	for _, val := range global.EmailAccountList {
+	for _, val := range config.MyEmailList {
 		global.EmailCount[val.Account] = global.EmailCountType{
 			Hour:   UseEmailCountHour[val.Account],
 			Hour24: UseEmailCount24Hour[val.Account],

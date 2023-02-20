@@ -19,7 +19,8 @@ func Start() {
 	}).Start()
 
 	// 加载 SysEnv
-	ServerEnvInit()
+
+	config.ServerEnvInit()
 
 	Log.Println(
 		`系统初始化完成`,
