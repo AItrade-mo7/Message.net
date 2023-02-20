@@ -12,7 +12,7 @@ import (
 
 func Public(c *fiber.Ctx) error {
 	// 添加访问头
-	AddHeader(c)
+	c.Set("Data-Path", config.SysName)
 
 	findWss := strings.Contains(c.Path(), "/wss")
 	if findWss {
@@ -31,10 +31,4 @@ func Public(c *fiber.Ctx) error {
 	}
 
 	return c.Next()
-}
-
-func AddHeader(c *fiber.Ctx) error {
-	c.Set("Data-Path", config.SysName)
-
-	return nil
 }

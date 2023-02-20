@@ -14,7 +14,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
@@ -32,17 +31,16 @@ func Start() {
 		ServerHeader: config.SysName,
 	})
 
-	// 跨域
-	app.Use(cors.New())
-
-	// 不限流
-
-	// 日志中间件
-	app.Use(logger.New(logger.Config{
-		Format:     "[${time}] [${ip}:${port}] ${status} - ${method} ${latency} ${path} \n",
-		TimeFormat: "2006-01-02 - 15:04:05",
-		Output:     logFile,
-	}), middle.Public, compress.New(), favicon.New())
+	app.Use(
+		logger.New(logger.Config{
+			Format:     "[${time}] [${ip}:${port}] ${status} - ${method} ${latency} ${path} \n",
+			TimeFormat: "2006-01-02 - 15:04:05",
+			Output:     logFile,
+		}), // 日志系统
+		cors.New(),     // 允许跨域
+		compress.New(), // 压缩
+		middle.Public,  // 授权验证
+	)
 
 	// api
 	r_api := app.Group("/api")
@@ -52,7 +50,7 @@ func Start() {
 	// /api/async
 	async.Router(r_api)
 
-	// 静态文件服务器
+	// 默认返回 && 文件服务器
 	app.Use(api.Ping)
 
 	listenHost := mStr.Join(":", config.AppInfo.Port)
