@@ -22,38 +22,35 @@ func UpdateEmailCode(info mTask.CodeEmail) {
 	defer global.Run.Println("disposeTask.UpdateEmailCode 关闭数据库")
 	defer db.Close()
 
-	nowTime := mTime.GetUnixInt64()
 	upOpt := options.Update()
 	upOpt.SetUpsert(true)
 
-	for _, val := range info.To {
-		FK := bson.D{}
-		FK = append(FK, bson.E{
-			Key:   "Email",
-			Value: val,
-		})
-		EmailCode := dbType.EmailCodeTable{
-			Email:    val,
-			Code:     info.SendData.VerifyCode,
-			SendTime: nowTime,
-		}
-		UK := bson.D{}
-		mStruct.Traverse(EmailCode, func(key string, val any) {
-			UK = append(UK, bson.E{
-				Key: "$set",
-				Value: bson.D{
-					{
-						Key:   key,
-						Value: val,
-					},
+	FK := bson.D{{
+		Key:   "Email",
+		Value: info.To,
+	}}
+
+	EmailCode := dbType.EmailCodeTable{
+		Email:    info.To,
+		Code:     info.SendData.VerifyCode,
+		SendTime: mTime.GetTime().TimeUnix,
+	}
+
+	UK := bson.D{}
+	mStruct.Traverse(EmailCode, func(key string, val any) {
+		UK = append(UK, bson.E{
+			Key: "$set",
+			Value: bson.D{
+				{
+					Key:   key,
+					Value: val,
 				},
-			})
+			},
 		})
+	})
 
-		_, err := db.Table.UpdateOne(db.Ctx, FK, UK, upOpt)
-		if err != nil {
-			global.LogErr("disposeTask.UpdateEmailCode 数据更插失败", err)
-		}
-
+	_, err := db.Table.UpdateOne(db.Ctx, FK, UK, upOpt)
+	if err != nil {
+		global.LogErr("disposeTask.UpdateEmailCode 数据更插失败", err)
 	}
 }

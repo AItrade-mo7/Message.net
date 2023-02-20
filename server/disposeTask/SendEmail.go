@@ -35,7 +35,7 @@ func SendCodeEmail(TaskCont mTask.CodeEmail) error {
 		Password:    EmailServe.Password,
 		Port:        EmailServe.Port,
 		Host:        EmailServe.Host,
-		To:          TaskCont.To,
+		To:          []string{TaskCont.To},
 		From:        TaskCont.From,
 		Subject:     TaskCont.Subject,
 		TemplateStr: tmpl.CodeEmail, //  采用验证码模板
@@ -63,7 +63,7 @@ func SendRegisterSucceedEmail(TaskCont mTask.RegisterSucceedEmail) error {
 		Password:    EmailServe.Password,
 		Port:        EmailServe.Port,
 		Host:        EmailServe.Host,
-		To:          TaskCont.To,
+		To:          []string{TaskCont.To},
 		From:        TaskCont.From,
 		Subject:     TaskCont.Subject,
 		TemplateStr: tmpl.RegisterSucceedEmail, //  采用系统模板
