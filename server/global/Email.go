@@ -54,11 +54,13 @@ func SendEmail(emailOpt mEmail.Opt) error {
 
 // ======== 账号池子 ==============
 var EmailAccountList = []mEmail.ServeType{
+	// gmail
 	mEmail.Gmail("mo7trade1@gmail.com", "bhmfbovjxnkmcmjb"),
 	mEmail.Gmail("mo7trade2@gmail.com", "mhaqiyalgaiyhoto"),
+	mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf"),
+	// qq
 	mEmail.QQ("mo7trade@qq.com", "aluanmhgxubnbigf"),
 	mEmail.QQ("meichangliang@qq.com", "fxdxnbyronppbfha"),
-	mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf"),
 }
 
 func GetEmailServe() (resData mEmail.ServeType) {
