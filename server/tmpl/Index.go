@@ -4,7 +4,7 @@ import (
 	_ "embed"
 )
 
-//go:embed email-Code.html
+//go:embed email-Sys.html
 var SysEmail string
 
 //go:embed email-Code.html

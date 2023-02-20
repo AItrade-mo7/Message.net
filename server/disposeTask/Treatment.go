@@ -77,10 +77,14 @@ func ReadTask(path string, db *mMongo.DB) {
 	db.Table.InsertOne(db.Ctx, Task)
 
 	global.Run.Println("===== 一条 disposeTask.ReadTask 任务执行结束 ======", Task.TaskID)
-	if err == nil {
-		err := os.Remove(path)
-		global.LogErr("disposeTask.ReadTask-2 任务删除失败!", err)
+	if err != nil {
+		global.LogErr("disposeTask.ReadTask-2 任务执行失败!", Task.TaskID)
+		return
 	} else {
-		global.LogErr("disposeTask.ReadTask-3 任务执行失败!", Task.TaskID)
+		isPath := mPath.Exists(path)
+		if isPath {
+			err = os.Remove(path)
+			global.LogErr("disposeTask.ReadTask-3 任务删除失败!", err)
+		}
 	}
 }
