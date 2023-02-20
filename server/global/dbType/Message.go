@@ -1,7 +1,10 @@
 package dbType
 
-// ======= Message 数据库 ==========
-// Email
+/*
+用来存储邮件发送记录
+db: Message
+collection : Email
+*/
 type MessageEmail struct {
 	// 自定义
 	SendResult    string `bson:"SendResult"`

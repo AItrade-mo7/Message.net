@@ -1,6 +1,10 @@
 package dbType
 
-// 发送验证码的表结构 ========= EmailCode ============
+/*
+用来存储验证码
+db: Message
+collection : VerifyCode
+*/
 type EmailCodeTable struct {
 	Email    string `bson:"Email"`
 	Code     string `bson:"Code"`
