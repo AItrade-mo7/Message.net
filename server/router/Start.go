@@ -36,7 +36,7 @@ func Start() {
 			Format:     "[${time}] [${ip}:${port}] ${status} - ${method} ${latency} ${path} \n",
 			TimeFormat: "2006-01-02 - 15:04:05",
 			Output:     logFile,
-		}), // 日志系统
+		}), // 日志
 		cors.New(),     // 允许跨域
 		compress.New(), // 压缩
 		middle.Public,  // 授权验证
