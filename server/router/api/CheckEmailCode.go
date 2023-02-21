@@ -73,5 +73,5 @@ func CheckEmailCode(c *fiber.Ctx) error {
 		return c.JSON(result.ErrEmailCode.WithMsg(err))
 	}
 
-	return c.JSON(result.Succeed.WithMsg("检查验证码是否正确"))
+	return c.JSON(result.Succeed.WithMsg("Succeed"))
 }
