@@ -5,8 +5,7 @@ import (
 
 	"Message.net/server/global"
 	"Message.net/server/global/config"
-	"Message.net/server/ready"
-	"Message.net/server/router"
+	"Message.net/server/testCase"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -20,8 +19,10 @@ func main() {
 	global.Start()
 
 	// 主要业务逻辑准备
-	ready.Start()
+	// ready.Start()
 
 	// 启动 http 监听服务
-	router.Start()
+	// router.Start()
+
+	testCase.SendEmail()
 }
