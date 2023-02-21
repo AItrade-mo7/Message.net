@@ -45,7 +45,7 @@ func LogErr(sum ...any) {
 	str := fmt.Sprintf("系统错误: %+v", sum)
 	Log.Println(str)
 
-	// 系统的重大错误，必须要发送错误邮件 默认使用企业微信发送
+	// 系统的重大错误，必须要发送错误邮件
 	EmailServe := GetEmailServe()
 	message := ""
 	if len(sum) > 0 {

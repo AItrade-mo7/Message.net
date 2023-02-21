@@ -1,26 +1,20 @@
 package ready
 
 import (
-	"Message.net/server/global"
 	"Message.net/server/global/config"
-	"Message.net/server/tmpl"
-	"github.com/EasyGolang/goTools/mEmail"
+	"github.com/EasyGolang/goTools/mEncrypt"
+	"github.com/EasyGolang/goTools/mFile"
 	"github.com/EasyGolang/goTools/mJson"
+	"github.com/EasyGolang/goTools/mStr"
 	"github.com/EasyGolang/goTools/mTask"
 	"github.com/EasyGolang/goTools/mTime"
 )
 
 func StartEmail() {
-	EmailServe := global.GetEmailServe()
-	emailOpt := mEmail.Opt{
-		Account:     EmailServe.Account,
-		Password:    EmailServe.Password,
-		Port:        EmailServe.Port,
-		Host:        EmailServe.Host,
-		To:          []string{config.SysEmail},
-		From:        config.SysName,
-		Subject:     "服务启动",
-		TemplateStr: tmpl.SysEmail,
+	TaskContent := mJson.StructToMap(mTask.SysEmail{
+		From:    config.SysName,
+		To:      []string{config.SysEmail},
+		Subject: "服务启动",
 		SendData: mTask.SysEmailParam{
 			Title:        "Message.net 服务启动",
 			Message:      "服务启动",
@@ -29,6 +23,22 @@ func StartEmail() {
 			Source:       config.SysName,
 			SecurityCode: "trade.mo7.cc",
 		},
+	})
+
+	now := mTime.GetTime()
+	NewTask := mTask.TaskType{
+		TaskID:        mEncrypt.GetUUID(),
+		TaskType:      "SysEmail",
+		Content:       TaskContent,
+		Source:        config.SysName,
+		Description:   config.SysName + "程序启动",
+		CreateTime:    now.TimeUnix,
+		CreateTimeStr: now.TimeStr,
 	}
-	global.SendEmail(emailOpt)
+	FilePath := mStr.Join(
+		config.Dir.TaskQueue,
+		"/",
+		NewTask.TaskID+".json",
+	)
+	mFile.Write(FilePath, mJson.ToStr(NewTask))
 }
