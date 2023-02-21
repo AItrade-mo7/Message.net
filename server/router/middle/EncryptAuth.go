@@ -17,7 +17,8 @@ func EncryptAuth(c *fiber.Ctx) error {
 	}
 
 	enData := mEncrypt.MD5(mStr.ToStr(c.Body()))
-	shaStr := config.Encrypt(c.Path() + c.Get("User-Agent") + enData)
+	headersAuth := mStr.Join(c.Path(), c.Get("User-Agent"), enData)
+	shaStr := config.Encrypt(headersAuth)
 	isFind := strings.Contains(shaStr, EncStr)
 
 	if !isFind {
