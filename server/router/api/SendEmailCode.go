@@ -22,13 +22,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type SendEmailParam struct {
+type SendEmailCodeParam struct {
 	Email  string
 	Action string
 }
 
 func SendEmailCode(c *fiber.Ctx) error {
-	var json SendEmailParam
+	var json SendEmailCodeParam
 	mFiber.Parser(c, &json)
 
 	isEmail := mVerify.IsEmail(json.Email)

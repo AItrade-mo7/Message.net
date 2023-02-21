@@ -13,4 +13,5 @@ func Router(router fiber.Router) {
 	r := router.Group("/await", MiddleWare)
 
 	r.Post("/SendEmailCode", api.SendEmailCode)
+	r.Post("/CheckEmailCode", api.CheckEmailCode)
 }
