@@ -101,7 +101,7 @@ func SendEmailCode(c *fiber.Ctx) error {
 		"/",
 		NewTask.TaskID+".json",
 	)
-	mFile.Write(FilePath, mJson.ToStr(json))
+	mFile.Write(FilePath, mJson.ToStr(NewTask))
 	global.TaskChan <- NewTask.TaskID
 
 	return c.JSON(result.Succeed.WithMsg("验证码已发送"))
