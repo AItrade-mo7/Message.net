@@ -12,7 +12,7 @@ import (
 
 func EncryptAuth(c *fiber.Ctx) error {
 	EncStr := c.Get("Auth-Encrypt")
-	if len(EncStr) < 20 {
+	if len([]rune(EncStr)) < 20 {
 		return errors.New("需要授权码")
 	}
 

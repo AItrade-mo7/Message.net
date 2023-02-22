@@ -34,17 +34,22 @@ func SendEmailCode(c *fiber.Ctx) error {
 
 	isEmail := mVerify.IsEmail(json.Email)
 	if !isEmail {
-		emailErr := fmt.Errorf("json.Email 格式不正确 %+v", json.Email)
+		emailErr := fmt.Errorf("邮箱格式不正确 %+v", json.Email)
 		return c.JSON(result.ErrEmail.WithMsg(emailErr))
 	}
 
 	if len(json.Action) < 1 {
-		emailErr := fmt.Errorf("json.Action 不能为空")
+		emailErr := fmt.Errorf("Action不能为空")
 		return c.JSON(result.ErrEmail.WithMsg(emailErr))
 	}
 
 	if len(json.EntrapmentCode) < 1 {
-		emailErr := fmt.Errorf("json.EntrapmentCode 不能为空")
+		emailErr := fmt.Errorf("防钓鱼码不能为空")
+		return c.JSON(result.ErrEmail.WithMsg(emailErr))
+	}
+
+	if len([]rune(json.EntrapmentCode)) < 24 {
+		emailErr := fmt.Errorf("防钓鱼码不能大于24位")
 		return c.JSON(result.ErrEmail.WithMsg(emailErr))
 	}
 

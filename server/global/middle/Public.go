@@ -19,10 +19,9 @@ func Public(c *fiber.Ctx) error {
 		return c.Next()
 	}
 
-	// 链接无后缀名则需要验证
 	filenameWithSuffix := path.Base(c.Path())
 	fileSuffix := path.Ext(filenameWithSuffix)
-	if len(fileSuffix) < 2 {
+	if len([]rune(fileSuffix)) < 2 { // 后缀名小于2的时候允许验证
 		// 授权验证
 		err := EncryptAuth(c)
 		if err != nil {

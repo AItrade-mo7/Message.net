@@ -6,10 +6,10 @@ import (
 
 	"Message.net/server/global"
 	"Message.net/server/global/config"
+	"Message.net/server/global/middle"
 	"Message.net/server/router/api"
 	"Message.net/server/router/async"
 	"Message.net/server/router/await"
-	"Message.net/server/router/middle"
 	"github.com/EasyGolang/goTools/mStr"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
