@@ -26,12 +26,12 @@ func SendEmail() {
 			Subject:     "测试邮件发送",
 			TemplateStr: tmpl.SysEmail,
 			SendData: mTask.SysEmailParam{
-				Title:        "测试邮件发送",
-				Message:      "当前邮箱账号为: " + EmailServe.Account,
-				Content:      mJson.Format(EmailServe),
-				SysTime:      mTime.UnixFormat(mTime.GetUnix()),
-				Source:       config.SysName,
-				SecurityCode: "trade.mo7.cc",
+				Title:          "测试邮件发送",
+				Message:        "当前邮箱账号为: " + EmailServe.Account,
+				Content:        mJson.Format(EmailServe),
+				SysTime:        mTime.UnixFormat(mTime.GetUnix()),
+				Source:         config.SysName,
+				EntrapmentCode: "trade.mo7.cc",
 			},
 		}
 		err := global.SendEmail(emailOpt)

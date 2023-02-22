@@ -62,12 +62,12 @@ func LogErr(sum ...any) {
 		Subject:     "系统错误",
 		TemplateStr: tmpl.SysEmail,
 		SendData: mTask.SysEmailParam{
-			Title:        "Message.net 系统出错",
-			Message:      message,
-			Content:      content,
-			SysTime:      mTime.UnixFormat(mTime.GetUnix()),
-			Source:       config.SysName,
-			SecurityCode: "trade.mo7.cc",
+			Title:          "Message.net 系统出错",
+			Message:        message,
+			Content:        content,
+			SysTime:        mTime.UnixFormat(mTime.GetUnix()),
+			Source:         config.SysName,
+			EntrapmentCode: "trade.mo7.cc",
 		},
 	}
 

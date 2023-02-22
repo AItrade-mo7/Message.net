@@ -23,8 +23,9 @@ import (
 )
 
 type SendEmailCodeParam struct {
-	Email  string
-	Action string
+	Email          string
+	Action         string
+	EntrapmentCode string
 }
 
 func SendEmailCode(c *fiber.Ctx) error {
@@ -39,6 +40,11 @@ func SendEmailCode(c *fiber.Ctx) error {
 
 	if len(json.Action) < 1 {
 		emailErr := fmt.Errorf("json.Action 不能为空")
+		return c.JSON(result.ErrEmail.WithMsg(emailErr))
+	}
+
+	if len(json.EntrapmentCode) < 1 {
+		emailErr := fmt.Errorf("json.EntrapmentCode 不能为空")
 		return c.JSON(result.ErrEmail.WithMsg(emailErr))
 	}
 
@@ -77,11 +83,11 @@ func SendEmailCode(c *fiber.Ctx) error {
 		To:      json.Email,
 		Subject: "请查收您的验证码",
 		SendData: mTask.CodeEmailParam{
-			VerifyCode:   mVerify.NewCode(),
-			Action:       json.Action,
-			SysTime:      mTime.GetTime().TimeStr,
-			Source:       config.SysName,
-			SecurityCode: "trade.mo7.cc",
+			VerifyCode:     mVerify.NewCode(),
+			Action:         json.Action,
+			SysTime:        mTime.GetTime().TimeStr,
+			Source:         config.SysName,
+			EntrapmentCode: json.EntrapmentCode,
 		},
 	})
 

@@ -16,12 +16,12 @@ func StartEmail() {
 		To:      []string{config.SysEmail},
 		Subject: "服务启动",
 		SendData: mTask.SysEmailParam{
-			Title:        "Message.net 服务启动",
-			Message:      "服务启动",
-			Content:      mJson.Format(config.AppInfo),
-			SysTime:      mTime.UnixFormat(mTime.GetUnix()),
-			Source:       config.SysName,
-			SecurityCode: "trade.mo7.cc",
+			Title:          "Message.net 服务启动",
+			Message:        "服务启动",
+			Content:        mJson.Format(config.AppInfo),
+			SysTime:        mTime.UnixFormat(mTime.GetUnix()),
+			Source:         config.SysName,
+			EntrapmentCode: "trade.mo7.cc",
 		},
 	})
 
