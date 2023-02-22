@@ -57,21 +57,23 @@ func CheckEmailCode(c *fiber.Ctx) error {
 	var dbData dbType.EmailCodeTable
 	db.Table.FindOne(db.Ctx, FK, findOptions).Decode(&dbData)
 
-	// 校验时间
-	sendTime := mStr.ToStr(dbData.SendTime)
-	nowTime := mTime.GetUnix()
-	subStr := mCount.Sub(nowTime, sendTime)
-
-	if mCount.Le(subStr, mCount.Mul(mTime.UnixTime.Minute, "12")) > 0 {
-		err := fmt.Errorf("验证码已过期")
-		return c.JSON(result.ErrEmailCode.WithMsg(err))
-	}
-
+	// 检查验证码正确性
 	DBCode := mEncrypt.MD5(dbData.Code)
 	if DBCode != json.Code {
 		err := fmt.Errorf("验证码不正确")
 		return c.JSON(result.ErrEmailCode.WithMsg(err))
 	}
+
+	// 校验时间 12 分钟
+	sendTime := mStr.ToStr(dbData.SendTime)
+	nowTime := mTime.GetUnix()
+	subStr := mCount.Sub(nowTime, sendTime)
+	if mCount.Le(subStr, mCount.Mul(mTime.UnixTime.Minute, "12")) > 0 {
+		err := fmt.Errorf("验证码已过期")
+		return c.JSON(result.ErrEmailCode.WithMsg(err))
+	}
+	// 验证成功，则删除该验证码
+	db.Table.DeleteOne(db.Ctx, FK)
 
 	return c.JSON(result.Succeed.WithMsg("Succeed"))
 }

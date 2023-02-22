@@ -3,7 +3,7 @@ module Message.net
 go 1.20
 
 require (
-	github.com/EasyGolang/goTools v1.0.13
+	github.com/EasyGolang/goTools v1.0.14
 	github.com/gofiber/fiber/v2 v2.42.0
 	github.com/json-iterator/go v1.1.12
 	github.com/spf13/viper v1.15.0
