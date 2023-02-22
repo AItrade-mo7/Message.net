@@ -72,8 +72,10 @@ func CheckEmailCode(c *fiber.Ctx) error {
 		err := fmt.Errorf("验证码已过期")
 		return c.JSON(result.ErrEmailCode.WithMsg(err))
 	}
-	// 验证成功，则删除该验证码
-	db.Table.DeleteOne(db.Ctx, FK)
+	// 验证成功，若验证码大于6分钟则删除验证码
+	if mCount.Le(subStr, mCount.Mul(mTime.UnixTime.Minute, "6")) > 0 {
+		db.Table.DeleteOne(db.Ctx, FK)
+	}
 
 	return c.JSON(result.Succeed.WithMsg("Succeed"))
 }
