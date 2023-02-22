@@ -48,7 +48,7 @@ func SendEmailCode(c *fiber.Ctx) error {
 		return c.JSON(result.ErrEmail.WithMsg(emailErr))
 	}
 
-	if len([]rune(json.EntrapmentCode)) < 24 {
+	if len([]rune(json.EntrapmentCode)) > 24 {
 		emailErr := fmt.Errorf("防钓鱼码不能大于24位")
 		return c.JSON(result.ErrEmail.WithMsg(emailErr))
 	}
@@ -75,8 +75,8 @@ func SendEmailCode(c *fiber.Ctx) error {
 	nowTime := mTime.GetUnix()              // 当前时间
 	subStr := mCount.Sub(nowTime, sendTime) // 两者的时间差
 
-	// 逻辑，如果没有发送则 sendTime 为 0 ， 则时间差无限大，如果发送了
-	if mCount.Le(subStr, mCount.Mul(mTime.UnixTime.Minute, "10")) < 0 {
+	// 逻辑，如果没有发送则 sendTime 为 0 ， 则时间差无限大
+	if mCount.Le(subStr, mCount.Mul(mTime.UnixTime.Minute, "6")) < 0 {
 		db.Close()
 		err := fmt.Errorf("刚刚的验证码还能再用哦~")
 		return c.JSON(result.Fail.WithMsg(err))

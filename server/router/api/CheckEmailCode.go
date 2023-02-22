@@ -68,7 +68,7 @@ func CheckEmailCode(c *fiber.Ctx) error {
 	sendTime := mStr.ToStr(dbData.SendTime)
 	nowTime := mTime.GetUnix()
 	subStr := mCount.Sub(nowTime, sendTime)
-	if mCount.Le(subStr, mCount.Mul(mTime.UnixTime.Minute, "12")) > 0 {
+	if mCount.Le(subStr, mCount.Mul(mTime.UnixTime.Minute, "8")) > 0 {
 		err := fmt.Errorf("验证码已过期")
 		return c.JSON(result.ErrEmailCode.WithMsg(err))
 	}
