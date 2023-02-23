@@ -1,4 +1,4 @@
-package await
+package public
 
 import (
 	"Message.net/server/global/config"

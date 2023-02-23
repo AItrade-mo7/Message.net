@@ -10,6 +10,7 @@ import (
 	"Message.net/server/router/api"
 	"Message.net/server/router/async"
 	"Message.net/server/router/await"
+	"Message.net/server/router/public"
 	"github.com/EasyGolang/goTools/mStr"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -49,6 +50,9 @@ func Start() {
 
 	// /api/async
 	async.Router(r_api)
+
+	// public
+	public.Router(r_api)
 
 	// 默认返回 && 文件服务器
 	app.Use(api.Ping)
