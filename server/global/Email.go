@@ -1,6 +1,8 @@
 package global
 
 import (
+	"strings"
+
 	"Message.net/server/global/config"
 	"Message.net/server/global/dbType"
 	"github.com/EasyGolang/goTools/mCount"
@@ -55,9 +57,20 @@ func GetEmailServe() (resData mEmail.ServeType) {
 	resData = config.MyEmailList[index]
 	HourCount := EmailCount[resData.Account]
 
-	// 小时内 20 封 ; 24 小时内 100 封
-	if HourCount.Hour < 20 && HourCount.Hour24 < 100 {
-		return
+	isQQ := strings.Contains(resData.Account, "qq.com")
+	isGmail := strings.Contains(resData.Account, "gmail.com")
+
+	if isQQ { // QQ 邮箱 发件次数 和 频率 超过
+		if HourCount.Hour > 20 && HourCount.Hour24 > 100 {
+			return GetEmailServe()
+		}
 	}
-	return GetEmailServe()
+
+	if isGmail { // Gmail 邮箱 发件次数 和 频率 超过
+		if HourCount.Hour > 20 && HourCount.Hour24 > 100 {
+			return GetEmailServe()
+		}
+	}
+
+	return
 }

@@ -24,4 +24,6 @@ func main() {
 
 	// 启动 http 监听服务
 	router.Start()
+
+	// testCase.SendEmail()
 }
