@@ -3,7 +3,7 @@ module Message.net
 go 1.20
 
 require (
-	github.com/EasyGolang/goTools v1.0.17
+	github.com/EasyGolang/goTools v1.0.18
 	github.com/gofiber/fiber/v2 v2.42.0
 	github.com/json-iterator/go v1.1.12
 	github.com/spf13/viper v1.15.0
@@ -37,7 +37,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/montanaflynn/stats v0.7.0 // indirect
-	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
+	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
 	github.com/philhofer/fwd v1.1.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
