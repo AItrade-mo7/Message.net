@@ -29,6 +29,7 @@ func WatchTaskDir() {
 		}
 		global.Run.Println("=====新任务进来了======", TaskID)
 		disposeTask.Treatment()
+		go CycleFunc() // 结束了同步一次
 	}
 }
 
