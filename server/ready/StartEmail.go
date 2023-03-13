@@ -11,6 +11,7 @@ import (
 )
 
 func StartEmail() {
+	// 写入邮件发送任务
 	TaskContent := mJson.StructToMap(mTask.SysEmail{
 		From:    config.SysName,
 		To:      []string{config.SysEmail},
