@@ -16,7 +16,7 @@ var MyEmailList = []mEmail.ServeType{
 	mEmail.Gmail("mo7trade9@gmail.com", "jnkijtdkdbxavbqf"),
 	// mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf"),
 	// qq
-	// mEmail.QQ("mo7trade@qq.com", "aluanmhgxubnbigf"),
+	mEmail.QQ("mo7trade@qq.com", "aluanmhgxubnbigf"),
 	// mEmail.QQ("meichangliang@qq.com", "fxdxnbyronppbfha"),
 	// mEmail.QQ("mo7trade1@qq.com", "xxxx"),
 	// mEmail.QQ("mo7_cc@qq.com", "xxx"),
