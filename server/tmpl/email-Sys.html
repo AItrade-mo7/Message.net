@@ -31,6 +31,20 @@
       href="//file.mo7.cc/AItrade/logo/app.svg"
     />
     <title>AItrade 系统邮件</title>
+    <style>
+      .label {
+        font-weight: 900;
+        margin-right: 6px;
+        font-size: 18px;
+      }
+      .val {
+        font-weight: 400;
+        font-size: 14px;
+      }
+      .content {
+        margin-bottom: 8px;
+      }
+    </style>
   </head>
 
   <body style="font-family: arial, verdana, sans-serif">
@@ -39,9 +53,8 @@
     <div style="margin-top: 20px">
       <div style="padding-bottom: 16px">
         <strong style="color: #4d4d4d; font-size: 24px"> {{.Message}} </strong>
-        <p>{{.Content}}</p>
+        <div class="content">{{.Content}}</div>
       </div>
-
       <div>
         <small style="color: #747474; font-size: 12px">
           （如非本人操作，请及时检查账户安全！任何操作前
