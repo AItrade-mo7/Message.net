@@ -1,7 +1,11 @@
 #!/bin/bash
-# 加载变量
+
+## 设置并加载变量
 source "./_shell/init.sh"
-#############
+BuildName=${BuildName}
+StartName=${StartName}
+OutPutPath=${OutPutPath}
+DeployPath=${DeployPath}
 
 echo "开始打包" &&
   npm run build
