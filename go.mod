@@ -3,7 +3,7 @@ module Message.net
 go 1.20
 
 require (
-	github.com/EasyGolang/goTools v1.0.23
+	github.com/EasyGolang/goTools v1.0.25
 	github.com/gofiber/fiber/v2 v2.42.0
 	github.com/json-iterator/go v1.1.12
 	github.com/spf13/viper v1.15.0
@@ -53,7 +53,7 @@ require (
 	github.com/temoto/robotstxt v1.1.2 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.44.0 // indirect
+	github.com/valyala/fasthttp v1.45.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	github.com/wenlng/go-user-agent v1.0.2 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
@@ -66,7 +66,7 @@ require (
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/protobuf v1.29.1 // indirect
+	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
