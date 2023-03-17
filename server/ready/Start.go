@@ -34,4 +34,5 @@ func WatchTaskDir() {
 
 func CycleFunc() {
 	SyncEmailUseCount() // 结束了同步一次
+	disposeTask.Treatment()
 }
