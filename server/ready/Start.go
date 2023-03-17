@@ -12,8 +12,9 @@ import (
 func Start() {
 	StartEmail()
 
+	disposeTask.Treatment() // Task 目录检查,在此时处理掉所有任务
 	mCycle.New(mCycle.Opt{
-		Func:      CycleFunc,
+		Func:      SyncEmailUseCount,
 		SleepTime: time.Minute * 20, // 20 分钟额外执行一次邮件同步
 	}).Start()
 
@@ -29,11 +30,6 @@ func WatchTaskDir() {
 		}
 		global.Run.Println("=====新任务进来了======", TaskID)
 		disposeTask.Treatment()
-		go CycleFunc() // 结束了同步一次
+		SyncEmailUseCount() // 结束了同步一次
 	}
-}
-
-func CycleFunc() {
-	SyncEmailUseCount()     // 邮件频率 同步
-	disposeTask.Treatment() // Task 目录检查,在此时处理掉所有任务
 }
