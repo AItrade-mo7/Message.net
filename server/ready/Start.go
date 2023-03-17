@@ -14,7 +14,7 @@ func Start() {
 
 	mCycle.New(mCycle.Opt{
 		Func:      CycleFunc,
-		SleepTime: time.Minute * 20, // 20 分钟额外执行一次邮件同步
+		SleepTime: time.Minute * 10, // 20 分钟额外执行一次邮件同步
 	}).Start()
 
 	// 启动进任务 进程 监听，监听一次 接口的保存结果
@@ -29,11 +29,9 @@ func WatchTaskDir() {
 		}
 		global.Run.Println("=====新任务进来了======", TaskID)
 		disposeTask.Treatment()
-		SyncEmailUseCount()
 	}
 }
 
 func CycleFunc() {
 	SyncEmailUseCount() // 结束了同步一次
-	disposeTask.Treatment()
 }
