@@ -12,6 +12,7 @@ import (
 func Start() {
 	StartEmail()
 
+	disposeTask.Treatment()
 	mCycle.New(mCycle.Opt{
 		Func:      CycleFunc,
 		SleepTime: time.Minute * 10, // 20 分钟额外执行一次邮件同步
@@ -34,5 +35,4 @@ func WatchTaskDir() {
 
 func CycleFunc() {
 	SyncEmailUseCount() // 结束了同步一次
-	disposeTask.Treatment()
 }
