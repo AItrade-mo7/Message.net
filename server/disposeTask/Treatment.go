@@ -16,6 +16,7 @@ import (
 )
 
 func Treatment() {
+	global.Run.Println("disposeTask.Treatment 执行一次目录遍历")
 	// 在这里连接数据库
 	db := mMongo.New(mMongo.Opt{
 		UserName: config.SysEnv.MongoUserName,
