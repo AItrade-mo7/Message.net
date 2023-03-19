@@ -1,6 +1,7 @@
 package ready
 
 import (
+	"Message.net/server/global"
 	"Message.net/server/global/config"
 	"github.com/EasyGolang/goTools/mEncrypt"
 	"github.com/EasyGolang/goTools/mFile"
@@ -42,4 +43,5 @@ func StartEmail() {
 		NewTask.TaskID+".json",
 	)
 	mFile.Write(FilePath, mJson.ToStr(NewTask))
+	global.TaskChan <- NewTask.TaskID
 }

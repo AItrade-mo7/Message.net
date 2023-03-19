@@ -10,16 +10,15 @@ import (
 
 // 在这里 启动一个子进程，来进行目录的变化监听
 func Start() {
-	StartEmail()
+	go WatchTaskDir() // 启动监听进程
 
-	disposeTask.Treatment()
 	mCycle.New(mCycle.Opt{
 		Func:      CycleFunc,
 		SleepTime: time.Minute * 10, // 20 分钟额外执行一次邮件同步
 	}).Start()
 
-	// 启动进任务 进程 监听，监听一次 接口的保存结果
-	go WatchTaskDir()
+	// 发送一次邮件
+	StartEmail()
 }
 
 func WatchTaskDir() {
