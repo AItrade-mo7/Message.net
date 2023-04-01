@@ -34,7 +34,7 @@ func CheckEmailCode(c *fiber.Ctx) error {
 	}
 
 	if len(json.Code) < 1 {
-		emailErr := fmt.Errorf("json.Code 不能为空")
+		emailErr := fmt.Errorf("验证码不能为空")
 		return c.JSON(result.ErrEmailCode.WithMsg(emailErr))
 	}
 
