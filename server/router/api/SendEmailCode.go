@@ -43,11 +43,6 @@ func SendEmailCode(c *fiber.Ctx) error {
 		return c.JSON(result.ErrEmail.WithMsg(emailErr))
 	}
 
-	if len(json.EntrapmentCode) < 1 {
-		emailErr := fmt.Errorf("防钓鱼码不能为空")
-		return c.JSON(result.ErrEmail.WithMsg(emailErr))
-	}
-
 	if len([]rune(json.EntrapmentCode)) > 24 {
 		emailErr := fmt.Errorf("防钓鱼码不能大于24位")
 		return c.JSON(result.ErrEmail.WithMsg(emailErr))
