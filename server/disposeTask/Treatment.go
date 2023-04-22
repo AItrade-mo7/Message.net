@@ -84,12 +84,12 @@ func ReadTask(path string, db *mMongo.DB) {
 
 	global.Run.Println("===== 一条 disposeTask.ReadTask 任务执行结束 ======", Task.TaskID)
 	if err != nil {
-		global.LogErr("disposeTask.ReadTask-2 任务执行失败!", Task.TaskID)
+		global.LogErr("disposeTask.ReadTask-2 任务执行失败!", mStr.ToStr(err), Task.TaskID)
 		return
 	} else {
 		err = os.Remove(path)
 		if err != nil {
-			global.LogErr("disposeTask.ReadTask-3 任务删除失败!", err)
+			global.LogErr("disposeTask.ReadTask-3 任务删除失败!", mStr.ToStr(err))
 		}
 	}
 }

@@ -1,6 +1,6 @@
 {
   "name": "message-net",
-  "version": "0.1.9",
+  "version": "0.2.1",
   "Port": 8900,
   "private": true,
   "scripts": {
