@@ -18,14 +18,19 @@ import (
 func Treatment() {
 	global.Run.Println(" =================== disposeTask.Treatment 执行一次目录遍历 =================== ")
 	// 在这里连接数据库
-	db := mMongo.New(mMongo.Opt{
+	db, err := mMongo.New(mMongo.Opt{
 		UserName: config.SysEnv.MongoUserName,
 		Password: config.SysEnv.MongoPassword,
 		Address:  config.SysEnv.MongoAddress,
 		DBName:   "Message",
-	}).Connect().Collection("Task")
+	}).Connect()
+	if err != nil {
+		global.LogErr("disposeTask.Treatment", err)
+		return
+	}
 	defer global.Run.Println("disposeTask.StoreTask 关闭数据库")
 	defer db.Close()
+	db.Collection("Task")
 
 	fsList, err := os.ReadDir(config.Dir.TaskQueue)
 	if err != nil {

@@ -13,15 +13,19 @@ import (
 
 // 同步账号的发送频率
 func SyncEmailUseCount() {
-	db := mMongo.New(mMongo.Opt{
+	db, err := mMongo.New(mMongo.Opt{
 		UserName: config.SysEnv.MongoUserName,
 		Password: config.SysEnv.MongoPassword,
 		Address:  config.SysEnv.MongoAddress,
 		DBName:   "Message",
-	}).Connect().Collection("Email")
+	}).Connect()
+	if err != nil {
+		global.LogErr("disposeTask.SyncEmailUseCount", err)
+		return
+	}
 	defer global.Run.Println("global.SyncEmailUseCount 同步一次发信频率")
 	defer db.Close()
-
+	db.Collection("Email")
 	UseEmailCountHour := make(map[string]int)
 	UseEmailCount24Hour := make(map[string]int)
 

@@ -23,14 +23,20 @@ type EmailCountType struct {
 var EmailCount map[string]EmailCountType
 
 func StoreSendEmail(storeOpt dbType.MessageEmail) {
-	db := mMongo.New(mMongo.Opt{
+	db, err := mMongo.New(mMongo.Opt{
 		UserName: config.SysEnv.MongoUserName,
 		Password: config.SysEnv.MongoPassword,
 		Address:  config.SysEnv.MongoAddress,
 		DBName:   "Message",
-	}).Connect().Collection("Email")
+	}).Connect()
+	if err != nil {
+		LogErr("disposeTask.StoreSendEmail", err)
+		return
+	}
 	defer Run.Println("global.StoreSendEmail 关闭数据库", storeOpt.EmailID)
 	defer db.Close()
+	db.Collection("Email")
+
 	db.Table.InsertOne(db.Ctx, storeOpt)
 }
 

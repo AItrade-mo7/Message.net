@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 
+	"Message.net/server/global"
 	"Message.net/server/global/config"
 	"Message.net/server/global/dbType"
 	"Message.net/server/router/result"
@@ -38,14 +39,18 @@ func CheckEmailCode(c *fiber.Ctx) error {
 		return c.JSON(result.ErrEmailCode.WithMsg(emailErr))
 	}
 
-	db := mMongo.New(mMongo.Opt{
+	db, err := mMongo.New(mMongo.Opt{
 		UserName: config.SysEnv.MongoUserName,
 		Password: config.SysEnv.MongoPassword,
 		Address:  config.SysEnv.MongoAddress,
 		DBName:   "Message",
-	}).Connect().Collection("VerifyCode")
+	}).Connect()
+	if err != nil {
+		global.LogErr("disposeTask.SyncEmailUseCount", err)
+		return c.JSON(result.ErrEmailCode.WithMsg(err))
+	}
 	defer db.Close()
-
+	db.Collection("VerifyCode")
 	// 查找参数设置
 	FK := bson.D{{
 		Key:   "Email",

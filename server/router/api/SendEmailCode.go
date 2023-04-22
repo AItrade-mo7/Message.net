@@ -53,13 +53,18 @@ func SendEmailCode(c *fiber.Ctx) error {
 		return c.JSON(result.ErrEmail.WithMsg(emailErr))
 	}
 
-	db := mMongo.New(mMongo.Opt{
+	db, err := mMongo.New(mMongo.Opt{
 		UserName: config.SysEnv.MongoUserName,
 		Password: config.SysEnv.MongoPassword,
 		Address:  config.SysEnv.MongoAddress,
 		DBName:   "Message",
-	}).Connect().Collection("VerifyCode")
+	}).Connect()
+	if err != nil {
+		global.LogErr("disposeTask.SendEmailCode", err)
+		return c.JSON(result.ErrEmail.WithMsg(err))
+	}
 	defer db.Close()
+	db.Collection("VerifyCode")
 	// 查找参数设置
 	FK := bson.D{{
 		Key:   "Email",

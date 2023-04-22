@@ -13,14 +13,19 @@ import (
 )
 
 func UpdateEmailCode(info mTask.CodeEmail) {
-	db := mMongo.New(mMongo.Opt{
+	db, err := mMongo.New(mMongo.Opt{
 		UserName: config.SysEnv.MongoUserName,
 		Password: config.SysEnv.MongoPassword,
 		Address:  config.SysEnv.MongoAddress,
 		DBName:   "Message",
-	}).Connect().Collection("VerifyCode")
+	}).Connect()
+	if err != nil {
+		global.LogErr("disposeTask.UpdateEmailCode", err)
+		return
+	}
 	defer global.Run.Println("disposeTask.UpdateEmailCode 关闭数据库")
 	defer db.Close()
+	db.Collection("VerifyCode")
 
 	upOpt := options.Update()
 	upOpt.SetUpsert(true)
@@ -49,7 +54,7 @@ func UpdateEmailCode(info mTask.CodeEmail) {
 		})
 	})
 
-	_, err := db.Table.UpdateOne(db.Ctx, FK, UK, upOpt)
+	_, err = db.Table.UpdateOne(db.Ctx, FK, UK, upOpt)
 	if err != nil {
 		global.LogErr("disposeTask.UpdateEmailCode 数据更插失败", err)
 	}
