@@ -3,7 +3,6 @@ package api
 import (
 	"fmt"
 
-	"Message.net/server/global"
 	"Message.net/server/global/config"
 	"Message.net/server/global/dbType"
 	"Message.net/server/router/result"
@@ -46,8 +45,7 @@ func CheckEmailCode(c *fiber.Ctx) error {
 		DBName:   "Message",
 	}).Connect()
 	if err != nil {
-		global.LogErr("disposeTask.SyncEmailUseCount", err)
-		return c.JSON(result.ErrEmailCode.WithMsg(err))
+		return c.JSON(result.ErrDB.WithMsg(err))
 	}
 	defer db.Close()
 	db.Collection("VerifyCode")

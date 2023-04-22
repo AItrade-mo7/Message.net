@@ -60,8 +60,7 @@ func SendEmailCode(c *fiber.Ctx) error {
 		DBName:   "Message",
 	}).Connect()
 	if err != nil {
-		global.LogErr("disposeTask.SendEmailCode", err)
-		return c.JSON(result.ErrEmail.WithMsg(err))
+		return c.JSON(result.ErrDB.WithMsg(err))
 	}
 	defer db.Close()
 	db.Collection("VerifyCode")
