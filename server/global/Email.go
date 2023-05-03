@@ -30,7 +30,7 @@ func StoreSendEmail(storeOpt dbType.MessageEmail) {
 		DBName:   "Message",
 	}).Connect()
 	if err != nil {
-		LogErr("disposeTask.StoreSendEmail", err)
+		LogErr("disposeTask.StoreSendEmail", mStr.ToStr(err))
 		return
 	}
 	defer Run.Println("global.StoreSendEmail 关闭数据库", storeOpt.EmailID)
