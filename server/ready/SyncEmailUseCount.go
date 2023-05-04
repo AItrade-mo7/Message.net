@@ -6,6 +6,7 @@ import (
 	"Message.net/server/global/dbType"
 	"github.com/EasyGolang/goTools/mJson"
 	"github.com/EasyGolang/goTools/mMongo"
+	"github.com/EasyGolang/goTools/mStr"
 	"github.com/EasyGolang/goTools/mTime"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -20,7 +21,7 @@ func SyncEmailUseCount() {
 		DBName:   "Message",
 	}).Connect()
 	if err != nil {
-		global.LogErr("disposeTask.SyncEmailUseCount", err)
+		global.LogErr("disposeTask.SyncEmailUseCount", mStr.ToStr(err))
 		return
 	}
 	defer global.Run.Println("global.SyncEmailUseCount 同步一次发信频率")
