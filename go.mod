@@ -7,7 +7,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.44.0
 	github.com/json-iterator/go v1.1.12
 	github.com/spf13/viper v1.15.0
-	go.mongodb.org/mongo-driver v1.11.4
+	go.mongodb.org/mongo-driver v1.11.5
 )
 
 require (
@@ -53,7 +53,7 @@ require (
 	github.com/temoto/robotstxt v1.1.2 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.46.0 // indirect
+	github.com/valyala/fasthttp v1.47.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	github.com/wenlng/go-user-agent v1.0.2 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
