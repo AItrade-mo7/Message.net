@@ -7,7 +7,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.44.0
 	github.com/json-iterator/go v1.1.12
 	github.com/spf13/viper v1.15.0
-	go.mongodb.org/mongo-driver v1.11.5
+	go.mongodb.org/mongo-driver v1.11.4
 )
 
 require (
