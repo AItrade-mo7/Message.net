@@ -16,11 +16,11 @@ var MyEmailList = []mEmail.ServeType{
 	mEmail.Gmail("mo7trade9@gmail.com", "jnkijtdkdbxavbqf"),
 	mEmail.Gmail("meichangliang@gmail.com", "pwlooxzamplnwwgf"),
 	// qq
-	mEmail.QQ("mo7trade@qq.com", "aluanmhgxubnbigf"),
-	mEmail.QQ("meichangliang@qq.com", "fxdxnbyronppbfha"),
-	mEmail.QQ("mo7trade1@qq.com", "mdfrfnzezqayeaei"),
-	mEmail.QQ("mo7_cc@qq.com", "qdhamamxiijaebbh"),
-	mEmail.QQ("mo7trade0@qq.com", "oswmyorqcozdbgfh"),
+	// mEmail.QQ("mo7trade@qq.com", "aluanmhgxubnbigf"),
+	// mEmail.QQ("meichangliang@qq.com", "fxdxnbyronppbfha"),
+	// mEmail.QQ("mo7trade1@qq.com", "mdfrfnzezqayeaei"),
+	// mEmail.QQ("mo7_cc@qq.com", "qdhamamxiijaebbh"),
+	// mEmail.QQ("mo7trade0@qq.com", "oswmyorqcozdbgfh"),
 }
 
 var SysEmail = "meichangliang@outlook.com"
