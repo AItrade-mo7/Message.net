@@ -4,6 +4,7 @@
 source "./_shell/init.sh"
 BuildName=${BuildName}
 OutPutPath=${OutPutPath}
+NowPath=${NowPath}
 
 echo " =========== go build  =========== "
 
